@@ -7,3 +7,5 @@ source : https://www.kaggle.com/datasets/sujaykapadnis/ecological-impacts-of-pet
 how to dl  :
 wget https://www.kaggle.com/api/v1/datasets/download/sujaykapadnis/ecological-impacts-of-pet-cats
 
+patate
+

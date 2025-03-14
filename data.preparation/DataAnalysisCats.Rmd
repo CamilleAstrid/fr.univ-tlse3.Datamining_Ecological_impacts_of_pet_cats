@@ -92,7 +92,6 @@ CatCompletwoOutliers = subset.data.frame(CatComplet, CatComplet$manually.marked.
 
 Pour les variables non significative : 
 
-* timestamp => sert a rien
 
 * tag.local.identifier == individual.local.identifier
 
@@ -110,7 +109,7 @@ Il ne reste que ceux marqué en false ou rien pour les outliers. Nous allons sup
 
 ```{r}
 CatCompletwoOutliers = subset.data.frame(CatCompletwoOutliers,
-                                        select = c("location.long","location.lat",
+                                        select = c("location.long","location.lat","timestamp",
                                     "tag.local.identifier","study.name"))
 ```
 
