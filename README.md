@@ -4,6 +4,10 @@ Ce dépôt contient le code, les données et les résultats associés à l'analy
 
 ## Description
 :construction:
+Etude des datasets sur les chats australiens pour prédire :
+* la prédation en fonction du nombre de chats cotoyés et/ou du sexe et/ou de l'âge et/ou de la stérilisation de l'animal (si oui : combien en moyenne de proie par mois).
+* le temps resté à l'interieur du foyer en fonction du nombre de chats cotoyés et/ou du sexe et/ou de l'âge et/ou de la stérilisation de l'animal
+* la distance parcourue en fonction du nombre de chats cotoyés et/ou du sexe et/ou stérilisation et/ou de l'âge.
 
 ## Structure
 **Dossiers et fichiers**
@@ -27,14 +31,7 @@ Ce dépôt contient le code, les données et les résultats associés à l'analy
    ```
 2. Télécharger les données de l'analyse :
    Les données seront à télécharger à l'aide des commandes précédentes depuis ce dépôt.
-   
-   1. Données obtenues depuis kaggle
-   ```
-   wget https://www.kaggle.com/api/v1/datasets/download/sujaykapadnis/ecological-impacts-of-pet-cats
-   unzip ecological-impacts-of-pet-cats -d data
-   rm ecological-impacts-of-pet-cats
-   ```
-   2. Données originelles depuis MoveBank
+  
    * Données obtenues grâce aux GPS
    ```
    wget https://datarepository.movebank.org/server/api/core/bitstreams/7f4eddd5-d98c-4001-8487-ba3020c13c0d/content -O data/PetCatsAustraliaGPS
@@ -48,8 +45,7 @@ Ce dépôt contient le code, les données et les résultats associés à l'analy
    wget https://datarepository.movebank.org/server/api/core/bitstreams/603e5745-4ad3-4b24-9a57-02675b962e93/content -O data/PetCatsAustraliaREADME
    ```
 :warning: Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide des liens suivants :
-* [url_kaggle](https://www.kaggle.com/api/v1/datasets/download/sujaykapadnis/ecological-impacts-of-pet-cats)
-* [url_movebank](https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027-a87c09b30804)
+* [url-dataset-australian-cats](https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027-a87c09b30804)
 
 ## Reproduction des analyses
 :construction:
