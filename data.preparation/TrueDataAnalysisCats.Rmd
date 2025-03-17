@@ -1,0 +1,13 @@
+---
+title: "DataAnalysisTrueData"
+author: "AMOUROUX Jan RODRIGES Camille-Astrid BRAHIMI Celia"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.align="center", fig.width=6, fig.height=6, fig.path="Figs/", echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE)
+```
+
+
+
