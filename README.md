@@ -66,7 +66,7 @@ Ce projet et donc l'ensemble des éléments de ce répertoire est sous licence G
 DataMining.ABC
 Copyright (C) 2020  barriot
 
-Copyright (C) 2025 CamilleAstrid yeetersplebears SangaraSorama
+Copyright (C) 2025 CamilleAstrid AMOUROUX-J SangaraSorama
 
 ---
 ℹ️ Pour toute question, veuillez contacter l'équipe par mail :
