@@ -30,7 +30,8 @@ Etude des datasets sur les chats australiens pour prédire :
    cd fr.univ-tlse3.Datamining_Ecological_impacts_of_pet_cats
    ```
 2. Télécharger les données de l'analyse :
-   Les données seront à télécharger à l'aide des commandes précédentes depuis ce dépôt.
+
+ ⬇️ Les données seront à télécharger à l'aide des commandes suivantes depuis ce dépôt.
   
    * Données obtenues grâce aux GPS
    ```
