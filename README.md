@@ -34,6 +34,8 @@ Ce dépôt contient le code, les données et les résultats associés à l'analy
 Ce projet et donc l'ensemble des éléments de ce répertoire est sous licence GPL-v3 (sauf cas précisé).
 
 ## Références
+* Kays R, Dunn RR, Parsons AW, Mcdonald B, Perkins T, Powers S, Shell L, McDonald JL, Cole H, Kikillus H, Woods L, Tindle H, Roetman P (2020) The small home ranges and large local ecological impacts of pet cats. Animal Conservation. Roetman P, Tindle H (2020) Data from: The small home ranges and large local ecological impacts of pet cats [Australia]. Movebank Data Repository. doi:10.5441/001/1.289p5s77
+
 
 ## Auteurs
 
