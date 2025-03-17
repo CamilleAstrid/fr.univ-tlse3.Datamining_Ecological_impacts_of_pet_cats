@@ -5,9 +5,9 @@ Ce dépôt contient le code, les données et les résultats associés à l'analy
 ## Description
 :construction:
 Etude des datasets sur les chats australiens pour prédire :
-* la prédation en fonction du nombre de chats cotoyés et/ou du sexe et/ou de l'âge et/ou de la stérilisation de l'animal (si oui : combien en moyenne de proie par mois).
+* la prédation en fonction du nombre de chats cotoyés et/ou de l'heure de sortie et/ou du sexe et/ou de l'âge et/ou de la stérilisation de l'animal (si oui : combien en moyenne de proie par mois).
 * le temps resté à l'interieur du foyer en fonction du nombre de chats cotoyés et/ou du sexe et/ou de l'âge et/ou de la stérilisation de l'animal
-* la distance parcourue en fonction du nombre de chats cotoyés et/ou du sexe et/ou stérilisation et/ou de l'âge.
+* la distance parcourue en fonction du nombre de chats cotoyés et/ou du sexe et/ou stérilisation et/ou de l'âge et/ou de l'heure de sortie.
 
 ## Structure
 **Dossiers et fichiers**
