@@ -1,9 +1,18 @@
 # Etude de l'impact écologique des chats domestiques 🐈
+<p align="center">
+<img src="data/pictures/logo_blanc.png" alt="logo_Felinomicon" width="200" />
+<p/>
+ <p align="justify">
+Le projet Félinomicon s'inscrit dans le cadre du Master 1 Bioinformatique et Biologie des Systèmes à l'Université de Toulouse (Paul Sabatier, Toulouse III, FRANCE), année universitaire 2024-2025. Il propose une exploration inédite de l’impact écologique des chats domestiques à travers une approche bioinformatique et comportementale... mais sous un prisme presque ésotérique : celui de la connaissance invisible mais quantifiable, du modèle informatique qui révèle l’inconnu. Ce dépôt contient le code, les données et les résultats associés à l'analyse bioinformatique de l'impact des chats domestiques sur la diversité écologiques.
 
-Ce dépôt contient le code, les données et les résultats associés à l'analyse bioinformatique de l'impact des chats domestiques sur la diversité écologiques. Ce projet a été réalisé dans le cadre du Master 1 Bioinformatique et Biologie des Systèmes à l'Université de Toulouse (Paul Sabatier, Toulouse III, FRANCE), année universitaire 2024-2025.
+> _"Dans les ruelles sombres, derrière les rideaux des maisons tranquilles, ils rôdent... silencieux, gracieux, insaisissables. Les chats domestiques, ces familiers de nos foyers, sont peut-être les derniers vestiges d’un lien ancien avec des forces oubliées. Et si leurs pas feutrés cachaient un déséquilibre invisible ?"_  
 
 ## Description
 :construction:
+
+### Les données : une cartographie des instincts
+Chaque chat est une énigme, un vecteur de traces écologiques que l'œil humain ne perçoit pas. Le croisement de ces informations forme un **grimoire de comportements félins**, que le projet Félinomicon s’attache à décrypter.
+
 Etude des datasets sur les chats australiens pour prédire :
 * 🐦 la prédation (si oui : combien en moyenne de proie par mois) en fonction
   * du nombre de chats cotoyés
@@ -25,6 +34,29 @@ Etude des datasets sur les chats australiens pour prédire :
   * de l'âge
   * de la localisation
   * de la stérilisation
+    
+### Méthodologie d’analyse : invoquer l’algorithme
+
+À l’image d’un alchimiste manipulant des symboles anciens, nous utilisons :
+- Des modèles statistiques prédictifs
+- Des algorithmes d’apprentissage automatique
+- Des outils de visualisation bioinformatique
+
+Ces outils permettent de transformer des données éparses en structures de sens : cartes de risque écologique, profils types de prédateurs domestiques, zones d’impact potentielles sur la biodiversité.
+
+### Finalité : dévoiler l’invisible
+
+L’objectif n’est pas d’accuser, mais de comprendre. Félinomicon ambitionne de :
+- Quantifier l’impact écologique des chats domestiques sur leur environnement
+- Identifier les profils à fort potentiel de prédation
+- Proposer des pistes d’aménagement ou de sensibilisation pour concilier bien-être animal et préservation de la faune locale
+
+En somme, il s’agit de lever le voile sur une influence tapie dans l’ombre, souvent négligée, parfois minimisée, mais réelle.
+
+> _"Car dans chaque miaulement nocturne, dans chaque regard perçant à travers les feuillages, se cache peut-être l’écho d’un monde que l’on pensait dompté. Le Félinomicon n’est pas un avertissement... c’est une clé."_
+
+### Résultats principaux
+:construction:
 
 ## Structure
 **Dossiers et fichiers**
@@ -34,9 +66,6 @@ Etude des datasets sur les chats australiens pour prédire :
 :construction:
 
 ## Prérequis
-:construction:
-
-## Résultats principaux
 :construction:
 
 ## Installation
@@ -75,6 +104,8 @@ Ce projet et donc l'ensemble des éléments de ce répertoire est sous licence G
 * [GitLab R.BARRIOT](https://gitlab.com/rbarriot/datamining.project)
 * Kays R, Dunn RR, Parsons AW, Mcdonald B, Perkins T, Powers S, Shell L, McDonald JL, Cole H, Kikillus H, Woods L, Tindle H, Roetman P (2020) The small home ranges and large local ecological impacts of pet cats. Animal Conservation. Roetman P, Tindle H (2020) [doi:10.1111/acv.12563](https://zslpublications.onlinelibrary.wiley.com/doi/10.1111/acv.12563)
    * *Movebank Data*: The small home ranges and large local ecological impacts of pet cats [Australia] [doi:10.5441/001/1.289p5s77](https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027-a87c09b30804)
+* OpenAI. (2024). ChatGPT (GPT-4.0) [Large language model]. https://chat.openai.com
+   * Génération ou assistance de ChatGPT (OpenAI, 2024) pour la rédaction, la structuration des textes et la création d’éléments visuels.
 
 ## Auteurs
 
@@ -90,3 +121,4 @@ Copyright (C) 2025 CamilleAstrid AMOUROUX-J SangaraSorama
 * [Célia Brahimi](mailto:celia.brahimi@univ-tlse3.fr)
   
 Si des ajustements ou des ajouts sont nécessaires, n'hésitez pas à nous le signaler !
+<p/>
