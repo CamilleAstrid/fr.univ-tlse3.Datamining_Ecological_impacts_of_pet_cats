@@ -3,7 +3,7 @@
 <img src="data/pictures/logo_blanc.png" alt="logo_Felinomicon" width="200" />
 <p/>
  <p align="justify">
-Le projet Félinomicon s'inscrit dans le cadre du Master 1 Bioinformatique et Biologie des Systèmes à l'Université de Toulouse (Paul Sabatier, Toulouse III, FRANCE), année universitaire 2024-2025. Il propose une exploration inédite de l’impact écologique des chats domestiques à travers une approche bioinformatique et comportementale... mais sous un prisme presque ésotérique : celui de la connaissance invisible mais quantifiable, du modèle informatique qui révèle l’inconnu. Ce dépôt contient le code, les données et les résultats associés à l'analyse bioinformatique de l'impact des chats domestiques sur la diversité écologiques.
+Le projet Félinomicon s'inscrit dans le cadre du Master 1 Bioinformatique et Biologie des Systèmes à l'Université de Toulouse (Paul Sabatier, Toulouse III, FRANCE), année universitaire 2024-2025. Ce dépôt contient le code, les données et les résultats associés à l'analyse bioinformatique de l'impact des chats domestiques sur la diversité écologiques.
 
 > _"Dans les ruelles sombres, derrière les rideaux des maisons tranquilles, ils rôdent... silencieux, gracieux, insaisissables. Les chats domestiques, ces familiers de nos foyers, sont peut-être les derniers vestiges d’un lien ancien avec des forces oubliées. Et si leurs pas feutrés cachaient un déséquilibre invisible ?"_  
 
@@ -11,29 +11,19 @@ Le projet Félinomicon s'inscrit dans le cadre du Master 1 Bioinformatique et Bi
 :construction:
 
 ### Les données : une cartographie des instincts
-Chaque chat est une énigme, un vecteur de traces écologiques que l'œil humain ne perçoit pas. Le croisement de ces informations forme un **grimoire de comportements félins**, que le projet Félinomicon s’attache à décrypter.
+Chaque chat est une énigme, un vecteur de traces écologiques que l'œil humain ne perçoit pas. Le croisement de ces informations forme un grimoire de comportements félins, que le projet Félinomicon s’attache à décrypter. Il commencera ainsi par une étude sur les chats australiens pour prédire :
 
-Etude des datasets sur les chats australiens pour prédire :
-* 🐦 la prédation (si oui : combien en moyenne de proie par mois) en fonction
-  * du nombre de chats cotoyés
-  * de l'heure de sortie
-  * du sexe
-  * de l'âge
-  * de la localisation
-  * de la stérilisation
-* 🛋️ le temps resté à l'interieur du foyer en fonction
-  * du nombre de chats cotoyés
-  * du sexe
-  * de l'âge
-  * de la localisation
-  * de la stérilisation
-* 🏃 la distance parcourue en fonction
-  * du nombre de chats cotoyés
-  * de l'heure de sortie
-  * du sexe
-  * de l'âge
-  * de la localisation
-  * de la stérilisation
+* 🐦 le potentiel de prédation (si oui : combien en moyenne de proie par mois)
+* 🛋️ le temps passé en interieur au repos
+* 🏃 la distance parcourue à l'extérieure
+
+...en fonction de variables comportementales et démographiques suivantes :
+* le nombre de chats cotoyés au sein du foyer
+* l'heure de sortie
+* le sexe
+* l'âge
+* la localisation
+* la stérilisation
     
 ### Méthodologie d’analyse : invoquer l’algorithme
 
