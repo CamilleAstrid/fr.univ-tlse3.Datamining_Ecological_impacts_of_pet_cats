@@ -21,7 +21,7 @@ Dans le cadre de notre projet de recherche intitulé Félinomicon – L’algori
 
 Cette étude repose notamment sur la collecte de données comportementales, démographiques et environnementales relatives aux chats domestiques (âge, sexe, stérilisation, habitudes de sortie, localisation, etc.).
 
-Vous trouverez ci-joint un document officiel intitulé "Autorisation de collecte, traitement et diffusion des données relatives à un animal de compagnie", à remplir et signer si vous acceptez que les données concernant votre animal soient utilisées dans le cadre de cette recherche.
+Vous trouverez ci-joint un document officiel intitulé "Autorisation de collecte, traitement et diffusion des données relatives à un animal de compagnie", à remplir et signer si vous acceptez que les données concernant votre animal soient utilisées dans le cadre de cette recherche. Le document sera à renvoyer par mail au collecteur de données.
 📎 Document joint : Felinomicon_fiche_autorisation.pdf
 
 Nous vous assurons que toutes les données seront traitées de manière anonyme, dans le respect du RGPD, et exclusivement à des fins scientifiques et académiques.
@@ -38,7 +38,7 @@ L'équipe de développement de Félinomicon.
 
 
 Collecteur de données :
-RODRIGUÈS Camille-Astrid
+RODRIGUÈS Camille-Astrid / AMOUROUX Jan
 💼 Développeur bio-informatique junior
 📞 ********** | ✉️ ****************@*****.***
 💻 https://github.com/CamilleAstrid/fr.univ-tlse3.Datamining_Ecological_impacts_of_pet_cats
