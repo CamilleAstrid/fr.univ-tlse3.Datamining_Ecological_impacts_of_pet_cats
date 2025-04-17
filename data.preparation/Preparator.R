@@ -1,4 +1,4 @@
-library(ade4);  library(tidyverse);  library(GGally); library(stringr)
+library(tidyverse);  library(GGally); library(stringr)
 
 ################################################################################
 # open datasets : 
@@ -98,11 +98,12 @@ FullDataset.Cat$N.pray[is.na(FullDataset.Cat$N.pray)] = "-1"
 
 # Set NA for the others data
 
-FullDataset.Cat[FullDataset.Cat == ""] = NA
+FullDataset.Cat[FullDataset.Cat == ""] = 'None'
+FullDataset.Cat[is.na(FullDataset.Cat)] = 'NA'
 
 ## print the .csv in output
 
-write.csv(FullDataset.Cat, "OutCatdata.csv")
+write.csv(FullDataset.Cat, "../data/OutCatdata.csv")
 
 
 

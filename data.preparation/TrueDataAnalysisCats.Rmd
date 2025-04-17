@@ -9,5 +9,74 @@ output: html_document
 knitr::opts_chunk$set(fig.align="center", fig.width=6, fig.height=6, fig.path="Figs/", echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE)
 ```
 
+Importation des librairies
+```{r}
+library(plotly) ; library(magrittr) ; library(factoextra) ; library(tidyverse);  library(GGally); library(stringr)
+```
+
+Chargement des données
+```{r}
+OutCatdata = read.csv("../data/OutCatdata.csv", stringsAsFactors = F, na.strings = '')
+```
+
+Visualisation de la répartition des données
+```{r}
+# Résumé des informations du fichier
+summary(OutCatdata)
+
+# Visualisation du caractère de chasse des chats
+OutCatdata %>%
+  group_by(Hunt, animal.id)%>%
+  count(animal.id)
+
+# Visualisation du nombre de chats dans chaque classe
+NonHunter = 0 ; Hunter = 0 ; Unknown = 0
+CatList = unique(OutCatdata$animal.id)
+for (i in CatList){
+  line = which(OutCatdata$animal.id ==i )
+  foo = OutCatdata[line[1],]$Hunt
+  if (foo == "No")
+    NonHunter = NonHunter +1
+  if (foo == "Yes")
+    Hunter = Hunter +1
+  if (foo == "NA")
+    Unknown = Unknown +1
+}
+cat("Nombre de chats : non chasseur", NonHunter, "chasseur", Hunter, "inconnu", Unknown)
+cat("Pour un total de", NonHunter+Hunter+Unknown, "chats.")
+
+# Nombre de chats dans le fichier
+length(unique(OutCatdata$animal.id))
+
+#V0
+p = OutCatdata %>%
+  ggplot() +
+  geom_boxplot()
+ggplotly(p)
 
 
+
+#V1
+# Sélectionner uniquement les colonnes numériques (hors animal.id et Hunt)
+#numeric_vars <- OutCatdata %>%
+#  select(where(is.numeric)) %>%
+#  names()
+
+# Pour chaque variable numérique, générer un boxplot par classe de Hunt
+#plot_list <- lapply(numeric_vars, function(var) {
+#  p <- ggplot(OutCatdata, aes(x = Hunt, y = .data[[var]], fill = Hunt)) +
+#    geom_boxplot() +
+#    labs(title = paste("Boxplot de", var, "par classe de chasse"),
+#         x = "Comportement de chasse",
+#         y = var) +
+#    theme_minimal()
+#  ggplotly(p)
+#})
+
+# Afficher le premier plot (par exemple) ou utiliser subplot() pour tous les afficher
+#plot_list[[1]]  # Pour visualiser le premier
+# ou
+#subplot(plot_list, nrows = length(plot_list))  # pour tous les afficher dans une grille
+
+
+```
