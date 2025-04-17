@@ -45,7 +45,11 @@ En somme, il s’agit de lever le voile sur une influence tapie dans l’ombre, 
 
 > _"Car dans chaque miaulement nocturne, dans chaque regard perçant à travers les feuillages, se cache peut-être l’écho d’un monde que l’on pensait dompté. Le Félinomicon n’est pas un avertissement... c’est une clé."_
 
-### Résultats principaux
+### Principales conclusions
+:construction:
+
+Après obtention de notre modèle basé sur les chats domestiques australiens, nous avons recueilli des données sur nos petits compagnons dans le Sud Ouest de la France. Nous avons cherché à éprouver notre modèle sur un nouveau jeu de données.
+
 :construction:
 
 ## Structure
@@ -57,6 +61,15 @@ En somme, il s’agit de lever le voile sur une influence tapie dans l’ombre, 
 
 ## Prérequis
 :construction:
+Langages
+* ![R](https://img.shields.io/badge/R-4.4.2-darkred)
+* ![Python](https://img.shields.io/badge/python-3.8-blue)
+
+Packages :
+* ![R-package](https://img.shields.io/badge/R-ade4-red)
+* ![R-package](https://img.shields.io/badge/R-tidyverse-red)
+* ![R-package](https://img.shields.io/badge/R-GGaly-red)
+* ![R-package](https://img.shields.io/badge/R-stringr-red)
 
 ## Installation
 
