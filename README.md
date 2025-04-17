@@ -66,10 +66,8 @@ Langages
 * ![Python](https://img.shields.io/badge/python-3.8-blue)
 
 Packages :
-* ![R-package](https://img.shields.io/badge/R-ade4-red)
-* ![R-package](https://img.shields.io/badge/R-tidyverse-red)
-* ![R-package](https://img.shields.io/badge/R-GGaly-red)
-* ![R-package](https://img.shields.io/badge/R-stringr-red)
+
+![R-package](https://img.shields.io/badge/R-plotly-red) ![R-package](https://img.shields.io/badge/R-tidyverse-red) ![R-package](https://img.shields.io/badge/R-GGaly-red) ![R-package](https://img.shields.io/badge/R-stringr-red) ![R-package](https://img.shields.io/badge/R-magrittr-red) ![R-package](https://img.shields.io/badge/R-factoextra-red) 
 
 ## Installation
 
