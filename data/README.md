@@ -1,3 +1,7 @@
+<p align="center">
+<img src="pictures/logo_blanc.png" alt="logo_Felinomicon" width="200" />
+<p/>
+    
 # Jeux de données
 
 Ce répertoire doit contenir les fichiers de données de départ accompagnés de leur description (et l'indication de la provenance). Les données étant trop volumineuses, il faut les télécharger à l'aide des commandes indiquées dans le README.md présent à la racine ou à l'aide des commandes suivantes :
