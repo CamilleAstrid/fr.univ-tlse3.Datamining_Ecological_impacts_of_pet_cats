@@ -1,4 +1,8 @@
-# Jeux de données
+<p align="center">
+<img src="../pictures/logo_blanc.png" alt="logo_Felinomicon" width="200" />
+<p/>
+  
+# Nouveau jeu de données
 
 Ce dossier contient les fichiers de données de test, afin d'éprouver le modèle.
 Ce jeu de données a été récolté à l'aide des informations récoltées par les propriétaires de chats vivant en France.
