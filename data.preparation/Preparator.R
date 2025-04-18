@@ -1,5 +1,8 @@
 library(tidyverse);  library(GGally); library(stringr)
 
+# this setwd() only works for Rstudio.
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
 ################################################################################
 # open datasets : 
 ################################################################################
@@ -16,9 +19,12 @@ CatAusCarac = read.csv("../data/PetCatsAustraliaCaract"
 ##Select only the pertinent variables
 
 # 1. from Cats craracteristics
-Caracs = c( "animal.id","deploy.on.date","deploy.off.date","animal.comments","animal.life.stage",  "animal.reproductive.condition","animal.sex","manipulation.comments")
+Caracs = c( "animal.id","deploy.on.date","deploy.off.date","animal.comments",
+            "animal.life.stage",  "animal.reproductive.condition","animal.sex",
+            "manipulation.comments")
 # 2. From the GPS table
-GPS = c("event.id","timestamp","location.long","location.lat","individual.local.identifier")
+GPS = c("event.id","timestamp","location.long","location.lat",
+        "individual.local.identifier")
 
 ## creating subsets from our selected variables
 
@@ -53,7 +59,9 @@ time_pattern = "(\\d{2}:\\d{2}:\\d{2}\\.\\d{3})"
 ## 3. using a for loop to apply each pattern in order to extract the data
 
 for (i in 1:length(CatAusCarac.shave[,1])){
-    ligne = subset(CatAusCarac.shave[i,], select = c("animal.comments", "manipulation.comments","deploy.on.date","deploy.off.date"))
+    ligne = subset(CatAusCarac.shave[i,], 
+                   select = c("animal.comments","manipulation.comments",
+                              "deploy.on.date","deploy.off.date"))
     # la ça va être "crispy"
     
     # usage de chaque pattern
@@ -67,7 +75,8 @@ for (i in 1:length(CatAusCarac.shave[,1])){
     fooendHours = str_match(ligne[4], time_pattern)[2]
     fooID = CatAusCarac.shave[i,]$animal.id
     # on applique les données extraites par ligne (l'interêt de la boucle)
-    NewRows[i,] = c(fooID,fooHunt,fooPray,fooHrs,fooCats,fooStartDate,fooStartHours,fooEndDate,fooendHours)
+    NewRows[i,] = c(fooID,fooHunt,fooPray,fooHrs,fooCats,fooStartDate,
+                    fooStartHours,fooEndDate,fooendHours)
 }
 
 ## 4. applying the resulting data inside the cat's data table
