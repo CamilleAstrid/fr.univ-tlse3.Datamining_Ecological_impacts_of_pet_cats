@@ -91,6 +91,14 @@ FullAusCarac = FullAusCarac[,-7]; # removing manipulation.comments
 FullAusCarac = FullAusCarac[,-2:-3] # removing the date + hours (begin and end)
 
 
+## 6. concatenatng all the sterelisation under Yes or No
+
+reproductive.replacement = c("Neutered"="Sterilized","Spayed"="Sterilized","Fixed"="Sterilized",
+                             "Not Fixed"="Not Sterilized", "NA"="NA")
+
+FullAusCarac = FullAusCarac %>%
+    mutate(animal.reproductive.condition = recode(as.character(
+        FullAusCarac$animal.reproductive.condition), !!!reproductive.replacement))
 ################################################################################
 #concatenate the data table with the GPS info's table
 ################################################################################
