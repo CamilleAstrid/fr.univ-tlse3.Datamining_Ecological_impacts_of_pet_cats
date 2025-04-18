@@ -1,3 +1,18 @@
+# Préparation des données d'analyse
+
+## Obtenir les données au format qualitatif
+
+Pour certaines analyses, les données devront être au format qualitatif et ne pas présenter de données quantitatives. Il faut alors lancer l'exécution du fichier ```Cat
+
+
+
+
+
+
+
+
+
+
 Scripts accompagnés de la documentation utilisateur permettant d'obtenir la matrice *individus-variables* qui servira pour le projet à partir des fichiers présents dans le répertoire [data](../data) de votre projet.
 
 **Pour la phase B (cf. [calendrier](../README.md#calendrier))**, vous devez ajouter dans ce répertoire **l'ensembles des scripts** qui me permettront d'obtenir **la même matrice que vous** pour la suite de votre projet.
