@@ -60,14 +60,13 @@ Après obtention de notre modèle basé sur les chats domestiques australiens, n
 :construction:
 
 ## Prérequis
-:construction:
 Langages
 * ![R](https://img.shields.io/badge/R-4.4.2-darkred)
 * ![Python](https://img.shields.io/badge/python-3.8-blue)
 
-Packages :
+Packages (et leurs dépendances) :
 
-![R-package](https://img.shields.io/badge/R-plotly-red) ![R-package](https://img.shields.io/badge/R-tidyverse-red) ![R-package](https://img.shields.io/badge/R-GGaly-red) ![R-package](https://img.shields.io/badge/R-stringr-red) ![R-package](https://img.shields.io/badge/R-magrittr-red) ![R-package](https://img.shields.io/badge/R-factoextra-red) 
+![R-package](https://img.shields.io/badge/R-plotly-red) ![R-package](https://img.shields.io/badge/R-tidyverse-red) ![R-package](https://img.shields.io/badge/R-GGaly-red) ![R-package](https://img.shields.io/badge/R-stringr-red) ![R-package](https://img.shields.io/badge/R-magrittr-red) ![R-package](https://img.shields.io/badge/R-factoextra-red) ![R-package](https://img.shields.io/badge/R-Hmisc-red)
 
 ## Installation
 
