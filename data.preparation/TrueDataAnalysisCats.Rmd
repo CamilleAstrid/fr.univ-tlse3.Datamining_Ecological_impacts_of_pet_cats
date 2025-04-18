@@ -1,6 +1,6 @@
 ---
 title: "DataAnalysisTrueData"
-author: "AMOUROUX Jan RODRIGES Camille-Astrid BRAHIMI Celia"
+author: "AMOUROUX Jan RODRIGUES Camille-Astrid BRAHIMI Celia"
 date: "`r Sys.Date()`"
 output: html_document
 editor_options: 
@@ -11,17 +11,23 @@ editor_options:
 knitr::opts_chunk$set(fig.align="center", fig.width=6, fig.height=6, fig.path="Figs/", echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE)
 ```
 
-Importation des librairies
+# Importation des librairies
+
 ```{r}
 library(plotly) ; library(magrittr) ; library(factoextra) ; library(tidyverse);  library(GGally); library(stringr); library(Hmisc)
 ```
 
-Chargement des données
+# Chargement des données
+
 ```{r}
 OutCatdata = read.csv("../data/OutCatdata.csv", stringsAsFactors = T, na.strings = '')
+OutCatdataQuanti = read.csv("../data/OutCatdataQuantitativ.csv", stringsAsFactors = F, na.strings = '')
 ```
 
-Visualisation de la répartition des données
+# Analyse des données au format qualitatif
+
+## Prévisualisation des données
+
 ```{r, eval= F, include= F}
 # Résumé des informations du fichier
 summary(OutCatdata)
@@ -49,67 +55,35 @@ cat("Pour un total de", NonHunter+Hunter+Unknown, "chats.")
 
 # Nombre de chats dans le fichier
 length(unique(OutCatdata$animal.id))
-
-#V0
-p = OutCatdata %>%
-  ggplot() +
-  geom_boxplot()
-ggplotly(p)
-
-
-
-#V1
-# Sélectionner uniquement les colonnes numériques (hors animal.id et Hunt)
-#numeric_vars <- OutCatdata %>%
-#  select(where(is.numeric)) %>%
-#  names()
-
-# Pour chaque variable numérique, générer un boxplot par classe de Hunt
-#plot_list <- lapply(numeric_vars, function(var) {
-#  p <- ggplot(OutCatdata, aes(x = Hunt, y = .data[[var]], fill = Hunt)) +
-#    geom_boxplot() +
-#    labs(title = paste("Boxplot de", var, "par classe de chasse"),
-#         x = "Comportement de chasse",
-#         y = var) +
-#    theme_minimal()
-#  ggplotly(p)
-#})
-
-# Afficher le premier plot (par exemple) ou utiliser subplot() pour tous les afficher
-#plot_list[[1]]  # Pour visualiser le premier
-# ou
-#subplot(plot_list, nrows = length(plot_list))  # pour tous les afficher dans une grille
-
-
 ```
 
-## test Jan
+## Visualisation à l'aide de graphique
 
-test ou on regarde que avec du quantitatif (CF tp1 champignon)
+cf TP1 sur les champignons
+
+### Epurer les données
 
 ```{r}
 CatDataquali = OutCatdata[,-1:-5]
 CatDataquali = (CatDataquali[,-9:-12])
-# convertir les Int en facteurs
+```
+
+### Convertir les *int* en facteurs
+
+```{r}
 CatDataquali$N.pray = as.factor(CatDataquali$N.pray) ;
 CatDataquali$N.neigbours = as.factor(CatDataquali$N.neigbours) 
 ```
 
-#### modification de l'age pour ajouter un 0 au début afin de trier les chiffrs par ordre croissant : 
+### Modification de l'âge pour ajouter un 0 au début afin de trier les chiffres par ordre croissant : 
 
 ```{r}
 CatDataquali$Hrs.indors = as.numeric(CatDataquali$Hrs.indors)
-
-
 order = sprintf("%02d", -1:24)
-
 CatDataquali$Hrs.indors = order[ CatDataquali$Hrs.indors ] %>% as.factor
-
 ```
 
-
-
-On a des variables avec beaucoup de niveaux (nom, dates) nous allons les retirer car ralentit le temps de calcul et va génerer des règles trop spécifique (le nom surtout) 
+On a des variables avec beaucoup de niveaux (nom, dates) nous allons les retirer car cela ralentit le temps de calcul et va génerer des règles trop spécifiques (le nom surtout) 
 
 ```{r}
 trimmedCatDataquali = CatDataquali[,-1]
@@ -117,8 +91,7 @@ trimmedCatDataquali = trimmedCatDataquali[,-8:-11]
 ```
 
 
-## application du TP : 
-
+### Application du TP
 
 #### 1 exemple avec N.pray pour prédire Hunt
 
@@ -129,9 +102,10 @@ CatDataquali %>%
           cardinality_threshold=NULL)
 ```
 
-première visualisation de si chasse ou pas en fonction du nombre de proie
+Première visualisation du comportement de chasse en fonction du nombre de proie.
 
-cardinality_threshold c'est une sécurité mais nous il nou faut la retirer car on a de multiple niveaux
+
+***cardinality_threshold*** : est un paramètre de sécurité mais il nous faut la retirer car on a de multiple modalités pour nos variables
 
 
 #### Toutes les variables pour prédire Hunt
@@ -142,7 +116,7 @@ trimmedCatDataquali %>% ggbivariate(outcome = "Hunt",
                               cardinality_threshold=NULL)
 ```
 
-#### visualisation des différentes variables
+#### Visualisation des différentes variables
 
 stockage de Hunt dans `classes` et le tableau variables dans `Vars`
 
@@ -165,10 +139,127 @@ foo=sapply(colnames(Vars),
            )
 ```
 
-## ouvrir le jeu de donénesz quaézstitatif
+
+# Analyse des données au format quantitatif
+
+## Prévisualisation des données
+
+```{r, eval= F, include= F}
+# Résumé des informations du fichier
+summary(OutCatdataQuanti)
+
+# Visualisation du caractère de chasse des chats
+OutCatdataQuanti %>%
+  group_by(Hunt, animal.id)%>%
+  count(animal.id)
+
+# Visualisation du nombre de chats dans chaque classe
+NonHunter = 0 ; Hunter = 0 ; Unknown = 0
+CatList = unique(OutCatdataQuanti$animal.id)
+for (i in CatList){
+  line = which(OutCatdataQuanti$animal.id ==i )
+  foo = OutCatdataQuanti[line[1],]$Hunt
+  if (foo == 0)
+    NonHunter = NonHunter +1
+  if (foo == 1)
+    Hunter = Hunter +1
+  if (foo == -1)
+    Unknown = Unknown +1
+}
+cat("Nombre de chats : non chasseur", NonHunter, "chasseur", Hunter, "inconnu", Unknown)
+cat("Pour un total de", NonHunter+Hunter+Unknown, "chats.")
+
+# Nombre de chats dans le fichier
+length(unique(OutCatdataQuanti$animal.id))
+```
+
+## Visualisation à l'aide de graphique
+
+### Mettre toutes les données au format num ou int
 
 ```{r}
-
+OutCatdataQuanti$N.pray = as.numeric(OutCatdataQuanti$N.pray)
+OutCatdataQuanti$Hrs.indors = as.numeric(OutCatdataQuanti$Hrs.indors)
+OutCatdataQuanti$N.neigbours = as.numeric(OutCatdataQuanti$N.neigbours)
 ```
+
+### Epurer les données
+
+```{r}
+CatDataquanti = OutCatdataQuanti[,-1:-3]
+CatDataquanti$StartDate = as.Date(CatDataquanti$StartDate)
+CatDataquanti$EndDate = as.Date(CatDataquanti$EndDate)
+```
+
+Retirer le nom car cela ralentit le temps de calcul et va génerer des règles trop spécifiques.
+
+```{r}
+trimmedCatDataquanti = CatDataquanti[,-3]
+```
+
+### Première visualisation du comportement de chasse en fonction du nombre de proie.
+
+```{r}
+boxplot(CatDataquanti$N.pray~CatDataquanti$Hunt)
+```
+
+Les dates de début et de fin ont un impact trop fort sur le jeu de données. On va tenter de les conserver en ne notant que le mois des dates.
+
+```{r}
+trimmedCatDataquanti = CatDataquanti
+trimmedCatDataquanti$StartDate <- as.Date(as.character(trimmedCatDataquanti$StartDate), format = "%Y-%m-%d")
+trimmedCatDataquanti$EndDate <- as.Date(as.character(trimmedCatDataquanti$EndDate), format = "%Y-%m-%d")
+
+trimmedCatDataquanti$StartDate = as.numeric(format((trimmedCatDataquanti$StartDate), "%m"))
+trimmedCatDataquanti$EndDate = as.numeric(format((trimmedCatDataquanti$EndDate), "%m"))
+```
+
+Les heures de début et de fin ont maintenant un impact trop fort sur le jeu de données. On va tenter de les conserver en ne notant que l'heure de sortie.
+
+```{r}
+trimmedCatDataquanti$StartHours <- strptime(trimmedCatDataquanti$StartHours, format = "%H:%M:%S")
+trimmedCatDataquanti$StartHours <- as.numeric(format((trimmedCatDataquanti$StartHours), "%H"))
+
+trimmedCatDataquanti$EndHours <- strptime(trimmedCatDataquanti$EndHours, format = "%H:%M:%S")
+trimmedCatDataquanti$EndHours <- as.numeric(format((trimmedCatDataquanti$EndHours), "%H"))
+```
+
+Retirer les noms et modifier la colonne animal.reproductive.condition
+
+```{r}
+trimmedCatDataquanti = trimmedCatDataquanti[,-3]
+fooList = colnames(trimmedCatDataquanti)
+fooList[3] = 'sterilization'
+colnames(trimmedCatDataquanti) = fooList
+```
+
+Réafficher le boxplot
+
+```{r}
+boxplot(trimmedCatDataquanti, col = rainbow(length(trimmedCatDataquanti)))
+title(main = "Boxplots des modalités analysées", sub = "avant normalisation")
+```
+
+On observe qu'il faut normaliser les données avant de poursuivre les analyses.
+
+```{r}
+str(trimmedCatDataquanti)
+CataDataQuantiNormZ = trimmedCatDataquanti %>%
+  mutate(across(colnames(trimmedCatDataquanti), scale))
+boxplot(CataDataQuantiNormZ, col = rainbow(length(CataDataQuantiNormZ)))
+title(main = "Boxplots des modalités analysées", sub = "après normalisation")
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
