@@ -5,11 +5,7 @@ Ce répertoire doit contenir les fichiers de données de départ accompagnés de
 ## Téléchargement
 
 1. Jeu de données sur les chats
-```
-wget https://www.kaggle.com/api/v1/datasets/download/sujaykapadnis/ecological-impacts-of-pet-cats
-unzip ecological-impacts-of-pet-cats -d data
-rm ecological-impacts-of-pet-cats
-```
+
 
 /!\ Les données seront à télécharger à l'aide des commandes précédentes depuis la racine. Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide des liens suivants :
 
@@ -29,11 +25,9 @@ wget https://datarepository.movebank.org/server/api/core/bitstreams/603e5745-4ad
 
 ⚠️ Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide des liens suivants :
 
-    url-dataset-australian-cats
-
+https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027-a87c09b30804
 
 ## Sources
-1. https://www.kaggle.com/datasets/sujaykapadnis/ecological-impacts-of-pet-cats?select=Pet+Cats+Australia.csv
 
 ## Description
 1. Ce jeu de données a été récolté à l'aide de capteurs GPS posés sur les chats provenant des Etats-Unis, d'Angleterre, d'Australie et de Nouvelle-Zélande. Il y recence également les caractéristiques des chats telles que l'âge, le sexe et les habitudes de chasse.
