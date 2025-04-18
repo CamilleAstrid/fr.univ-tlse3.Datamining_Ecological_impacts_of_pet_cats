@@ -46,4 +46,4 @@ RODRIGUÈS Camille-Astrid / AMOUROUX Jan
 
 Fiche d'autorisation ci-contre : [Felinomicon_fiche_autorisation](https://github.com/CamilleAstrid/fr.univ-tlse3.Datamining_Ecological_impacts_of_pet_cats/blob/main/data/French_dataset/Felinomicon_fiche_autorisation.pdf)
 
-Un exemplaire sera conservé par l'équipe de recherche et un autre exemplaire par les propriétaires.
+[Un exemplaire sera conservé par l'équipe de recherche](https://github.com/CamilleAstrid/fr.univ-tlse3.Datamining_Autorisation) et un autre exemplaire par les propriétaires.
