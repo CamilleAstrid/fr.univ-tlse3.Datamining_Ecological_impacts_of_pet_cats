@@ -10,10 +10,10 @@ Ce répertoire doit contenir les fichiers de données de départ accompagnés de
 
 1. Jeu de données sur les chats
 
+> [!CAUTION]
+> Les données seront à télécharger à l'aide des commandes précédentes depuis la racine. Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide des liens suivants :
 
-/!\ Les données seront à télécharger à l'aide des commandes précédentes depuis la racine. Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide des liens suivants :
-
-⬇️ Les données seront à télécharger àsont les suivantes.
+⬇️ Les données seront à télécharger à sont les suivantes.
 
 Données obtenues grâce aux GPS
 ```
@@ -27,9 +27,9 @@ Fichier contenant toutes les informations sur les données précédentes
 ```
 wget https://datarepository.movebank.org/server/api/core/bitstreams/603e5745-4ad3-4b24-9a57-02675b962e93/content -O data/PetCatsAustraliaREADME
 ```
-⚠️ Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide des liens suivants :
-
-https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027-a87c09b30804
+> [!WARNING]
+> Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide des liens suivants :
+> https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027-a87c09b30804
 
 ## Sources
 
