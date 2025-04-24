@@ -250,7 +250,11 @@ boxplot(CataDataQuantiNormZ, col = rainbow(length(CataDataQuantiNormZ)))
 title(main = "Boxplots des modalités analysées", sub = "après normalisation")
 ```
 
+Exportation des données normalisées
 
+```{r}
+write.csv(CataDataQuantiNormZ, "../data/OutCatdataQuantiNormZ.csv")
+```
 
 
 
