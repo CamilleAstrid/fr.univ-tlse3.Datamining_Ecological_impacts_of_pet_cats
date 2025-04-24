@@ -13,7 +13,10 @@ Pour certaines analyses, les données devront être au format qualitatif et ne p
 
 Pour l'utiliser sur votre propre jeu de données, il faut modifier le chemin pour récupérer les fichiers en début de script.
 
-🚧 _Amélioration envisagée :_ permettre à l'utilisateur de renseigner en argument le fichier pour le traitement.
+> [!NOTE]
+> 🚧 **Amélioration envisagée** :
+> * permettre à l'utilisateur de renseigner en argument le fichier pour le traitement
+> * créer un interface user-friendly pour renseigner les modèles, les modifier, utiliser le modèle sur de nouveaux jeux de données
 
 ## Matrice individus-variables
 La préparation des données vise à diminuer le nombre d'informations redondantes et à retirer celles non informatives. Puis, le script convertit les données en quantitatives ou qualitatives selon le script exécuté.
