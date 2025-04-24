@@ -56,7 +56,7 @@ date_pattern = "(\\d{4}-\\d{2}-\\d{2})"
 time_pattern = "(\\d{2}:\\d{2}:\\d{2}\\.\\d{3})"
 
 # the patern to transform "6 years" into 6 : 
-year.pattern = "\\d+(?=\\s*years)"
+year.pattern = "{\\d|\\.}+(?=\\s*years)"
 
 ## 3. using a for loop to apply each pattern in order to extract the data
 
