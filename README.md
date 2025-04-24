@@ -8,7 +8,6 @@ Le projet Félinomicon s'inscrit dans le cadre du Master 1 Bioinformatique et Bi
 > _"Dans les ruelles sombres, derrière les rideaux des maisons tranquilles, ils rôdent... silencieux, gracieux, insaisissables. Les chats domestiques, ces familiers de nos foyers, sont peut-être les derniers vestiges d’un lien ancien avec des forces oubliées. Et si leurs pas feutrés cachaient un déséquilibre invisible ?"_  
 
 ## Description
-:construction:
 
 ### Les données : une cartographie des instincts
 Chaque chat est une énigme, un vecteur de traces écologiques que l'œil humain ne perçoit pas. Le croisement de ces informations forme un grimoire de comportements félins, que le projet Félinomicon s’attache à décrypter. Il commencera ainsi par une étude sur les chats australiens pour prédire :
@@ -46,7 +45,6 @@ En somme, il s’agit de lever le voile sur une influence tapie dans l’ombre, 
 > _"Car dans chaque miaulement nocturne, dans chaque regard perçant à travers les feuillages, se cache peut-être l’écho d’un monde que l’on pensait dompté. Le Félinomicon n’est pas un avertissement... c’est une clé."_
 
 ### Principales conclusions
-:construction:
 
 Après obtention de notre modèle basé sur les chats domestiques australiens, nous avons recueilli des données sur nos petits compagnons dans le Sud Ouest de la France. Nous avons cherché à éprouver notre modèle sur un nouveau jeu de données.
 
@@ -91,14 +89,15 @@ Packages (et leurs dépendances) :
    ```
    wget https://datarepository.movebank.org/server/api/core/bitstreams/603e5745-4ad3-4b24-9a57-02675b962e93/content -O data/PetCatsAustraliaREADME
    ```
-:warning: Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide des liens suivants :
-* [url-dataset-australian-cats](https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027-a87c09b30804)
+> [!WARNING]
+> Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide des liens suivants :
+> * [url-dataset-australian-cats](https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027-a87c09b30804)
 
 ## Reproduction des analyses
 :construction:
 
 ## Licence
-Ce projet et donc l'ensemble des éléments de ce répertoire est sous licence GPL-v3 (sauf cas précisé).
+Ce projet et donc l'ensemble des éléments de ce répertoire est sous [licence GPL-v3](https://github.com/CamilleAstrid/fr.univ-tlse3.Datamining_Ecological_impacts_of_pet_cats/blob/main/LICENSE) (sauf cas précisé).
 
 ## Références
 * [GitLab R.BARRIOT](https://gitlab.com/rbarriot/datamining.project)
@@ -115,10 +114,11 @@ Copyright (C) 2020  barriot
 Copyright (C) 2025 CamilleAstrid AMOUROUX-J SangaraSorama
 
 ---
-ℹ️ Pour toute question, veuillez contacter l'équipe par mail :
-* [Camille-Astrid Rodrigues](mailto:camilleastrid.cr@gmail.com)
-* [Jan Amouroux](mailto:jan.amouroux@univ-tlse3.fr)
-* [Célia Brahimi](mailto:celia.brahimi@univ-tlse3.fr)
-  
-Si des ajustements ou des ajouts sont nécessaires, n'hésitez pas à nous le signaler !
+> [!NOTE]
+> Pour toute question, veuillez contacter l'équipe par mail :
+>* [Camille-Astrid Rodrigues](mailto:camilleastrid.cr@gmail.com)
+>* [Jan Amouroux](mailto:jan.amouroux@univ-tlse3.fr)
+>* [Célia Brahimi](mailto:celia.brahimi@univ-tlse3.fr)
+>
+>Si des ajustements ou des ajouts sont nécessaires, n'hésitez pas à nous le signaler !
 <p/>
