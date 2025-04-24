@@ -99,6 +99,9 @@ reproductive.replacement = c("Neutered"="Sterilized","Spayed"="Sterilized","Fixe
 FullAusCarac = FullAusCarac %>%
     mutate(animal.reproductive.condition = recode(as.character(
         FullAusCarac$animal.reproductive.condition), !!!reproductive.replacement))
+
+write.csv(FullAusCarac, "../data/OutCatCarac.csv")
+
 ################################################################################
 #concatenate the data table with the GPS info's table
 ################################################################################

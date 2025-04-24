@@ -131,6 +131,9 @@ FullAusCarac = FullAusCarac %>%
 # to age and all the others "NA"
 FullAusCarac$animal.age[FullAusCarac$animal.age == "NA"] = -1
 
+# export
+write.csv(FullAusCarac, "../data/OutCatdataCaracQuanti.csv")
+
 ################################################################################
 #concatenate the data table with the GPS info's table
 ################################################################################
