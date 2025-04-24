@@ -34,4 +34,4 @@ https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027
 ## Sources
 
 ## Description
-1. Ce jeu de données a été récolté à l'aide de capteurs GPS posés sur les chats provenant des Etats-Unis, d'Angleterre, d'Australie et de Nouvelle-Zélande. Il y recence également les caractéristiques des chats telles que l'âge, le sexe et les habitudes de chasse.
+1. Ce jeu de données a été récolté à l'aide de capteurs GPS posés sur les chats provenant d'Australie et de France. Il y recence également les caractéristiques des chats telles que l'âge, le sexe et les habitudes de chasse.
