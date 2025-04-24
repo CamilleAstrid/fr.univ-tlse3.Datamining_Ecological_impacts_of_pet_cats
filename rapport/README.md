@@ -1,5 +1,5 @@
 <p align="center">
-<img src="data/pictures/logo_blanc.png" alt="logo_Felinomicon" width="200" />
+<img src="../data/pictures/logo_blanc.png" alt="logo_Felinomicon" width="200" />
 <p/>
 
 # Rapport de projet
