@@ -7,8 +7,8 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 # open datasets : 
 ################################################################################
 
-CatAus = read.csv("../data/Pet Cats Australia.csv"
-                  , stringsAsFactors = F)
+#CatAus = read.csv("../data/PetCatsAustralia.csv"
+#                  , stringsAsFactors = F)
 CatAusGPS = read.csv("../data/PetCatsAustraliaGPS"
                      , stringsAsFactors = F)
 CatAusCarac = read.csv("../data/PetCatsAustraliaCaract"
