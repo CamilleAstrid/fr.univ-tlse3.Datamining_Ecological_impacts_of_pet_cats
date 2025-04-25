@@ -125,11 +125,15 @@ tbg %>%
 # Normalisation
 ## Retirer les NA
 tbg = as.data.frame(tbg)
-for (i in 1:length(tbg[,1])){
-  if (is.na(tbg[i,4]))
+index = 1
+while (index>length(tbg[,1])) {
+  if (is.na(tbg[i,4]) | tbg[i,4]=="" | tbg[i,4]==" " | tbg[i,4]=='NA'){
     tbg = tbg[-i,]
+  }
+  else
+    index = index + 1
 }
-
+## Création du Z-score
 znorm = tbg %>%
   group_by(variable) %>%
   summarize(mean=mean(value),
@@ -138,7 +142,74 @@ znorm = tbg %>%
             max=max(value),
             median=median(value)
             )
-znorm
+## Jointure des z-scores
+tbg %<>% 
+  inner_join(znorm, by='variable') %>% 
+  mutate(value.z = (value-mean)/sd)
+## Vérification
+g <- tbg %>% 
+  group_by(variable) %>% 
+  summarize(moyenne=round(mean(value.z), 4), `écart-type`=sd(value.z))
+
+ggsave(filename = "Boxplots_Chasseurs_NonNormalisation.png", scale = 2, plot = g)
+# Formatage des données
+znorm %>% 
+  knitr::kable()
+
+# Visualisation normalisée
+g <- tbg %>%
+  ggplot(aes(Hunt, value.z, color=Hunt)) +
+  geom_violin() +
+  geom_jitter(alpha=.3, width=.15, size=0.5, shape = 3) +
+  facet_wrap(~ variable)
+
+ggsave(filename = "Boxplots_Chasseurs_Normalisation.png", scale = 2, plot = g)
+
+# Transformation des données
+tbz = tbg %>% 
+  select(rowid, Hunt, variable, value.z) %>%
+  pivot_wider(names_from = variable, values_from=value.z)
+
+# Nuages de points
+g <- tbz %>%
+  ggpairs(aes(color=Hunt, alpha=0.1))
+
+ggsave(filename = "Analyses_bivariees.png", scale = 3, plot = g)
+
+# Matrices de corrélations
+g <- tb %>%
+  select(-Hunt) %>%
+  ggcorr()
+
+ggsave(filename = "Matrice_de_correlation.png", scale = 3, plot = g)
+
+g <-tbz %>%
+  select(-Hunt) %>%
+  ggcorr()
+
+ggsave(filename = "Matrice_de_correlation_Normalisation.png", scale = 3, plot = g)
+
+# ACP
+## Supprimer les lignes avec NA
+tb = read.csv(file = "../data/OutCatdataQuantiNormZ.csv")
+for (index_ligne in 1:length(tb[,1])){
+  for (index_colonne in 1:length(tb[1,])){
+    if (is.na(tb[index_ligne,index_colonne]))
+      tb = tb[-index_ligne,]
+  }
+}
+write.csv(tb, file = "../data/OutCatdataQuantiNormZNoNA.csv")
+tb.acp = tb %>% 
+  select(-Hunt) %>% 
+  as.matrix %>% 
+  princomp(cor=T)
+g <- tb.acp %>% summary
+write(g, file = "export_tb.acp_summary.txt")
+
+g <- tb.acp %>%
+  fviz_screeplot(addlabels = TRUE, ylim = c(0, 50))
+
+ggsave(filename = "Eboulis_des_valeurs_propres.png", scale = 2, plot = g)
 
 
 
