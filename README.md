@@ -52,7 +52,42 @@ Après obtention de notre modèle basé sur les chats domestiques australiens, n
 
 ## Structure
 **Dossiers et fichiers**
-* :construction:
+
+* `README.md`  : Fichier de présentation du projet (vous y êtes !)
+* `LICENSE` : Licence d’utilisation
+* `.gitignore` : liste des fichier et/ou dossier à ignorer pour le git
+
+
+* **analysis/**
+	*  `README.md` : Fichier de présentation des méthodes d'analyses employées et les prérequis de ces dernières
+  	*  `*.png` : ensembles des images exporté de ModeleR
+  	*  `*.csv` : ensemble des sorties de `ModeleR.r`
+ 	*  `clusteror.ipynb` : jupyter Python utilisant scipy, nottament les packages sklearn et auto-sklearn pour faire de la classification automatisé
+	*  `ModeleR.R` : Script R utilisant principalement MASS afin de classifier automatiquement les chats
+
+
+* **data/**
+	*  `README.md` : Fichier de présentation des données
+	*  `OutCatdataCaracQuanti.csv` : csv après pretraitement des caractéristiques des chats étudiés.
+ 	*  **French_dataset/** : ensembles des fiches récolté par l'equipe _Félinimicon_ de chats français
+  		*  `README.md` : informations de l'obtention des données et leur source
+    	*  `CatDataFrance.csv` : fichier d'enregistrement des données
+     	*  `Felinomicon_fiche_autorisation.*` : fiche de déclaration de consentement de récupération des données
+
+	*  **pictures/** : ensembles des images des chats de **French_dataset**
+
+* **data.preparation/**
+  	*  `README.md` : Fichier de présentation des méthodes de prétraitement et de visualisation
+ 	*  `DataAnalysis.*` : vignettte de prétraitement des matrices individues/variables
+  	*  `Preparator.R` : Partie condensé et éxécutables de DataAnalysis pour la partie qualitatif
+  	*  `PreparatorQuantitativ.R` : Partie condensé et éxécutables de DataAnalysis pour la partie quantitatif
+  	*  `TrueDataAnalysisCats.*` : vignette de prétraitement et de visualisation plus poussé des matrices individu/variables
+	*  **Figs/** : répertoire des figures R mises en cache
+
+
+* **rapport/**
+	* `Enonce.md` : enoncé du cahieer des charges demandé par R.barriot
+ 	* `README.md` : mise en contexte du rapport
 
 ## Outils utilisés
 :construction:
