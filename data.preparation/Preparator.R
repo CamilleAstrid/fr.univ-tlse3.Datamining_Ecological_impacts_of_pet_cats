@@ -1,14 +1,14 @@
-library(tidyverse);  library(GGally); library(stringr)
+#=================Chargement des librairies=================#
+library(tidyverse) # librarie pour les pipes et autres qualité de vie
+library(stringr)   # pour les RE
 
 # this setwd() only works for Rstudio.
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-################################################################################
-# open datasets : 
-################################################################################
 
-#CatAus = read.csv("../data/PetCatsAustralia.csv"
-#                  , stringsAsFactors = F)
+
+#=================Chargement des données=================#
+
 CatAusGPS = read.csv("../data/PetCatsAustraliaGPS"
                      , stringsAsFactors = F)
 CatAusCarac = read.csv("../data/PetCatsAustraliaCaract"
@@ -16,82 +16,89 @@ CatAusCarac = read.csv("../data/PetCatsAustraliaCaract"
 
 
 
-##Select only the pertinent variables
+#=================Définition des facteurs=================#
 
-# 1. from Cats craracteristics
+#-----------------Depuis les caracteristiques des chats-----------------#
 Caracs = c( "animal.id","deploy.on.date","deploy.off.date","animal.comments",
             "animal.life.stage",  "animal.reproductive.condition","animal.sex",
             "manipulation.comments")
-# 2. From the GPS table
+
+#-----------------Depuis les caracteristiques GPS-----------------#
 GPS = c("event.id","timestamp","location.long","location.lat",
         "individual.local.identifier")
 
-## creating subsets from our selected variables
+
+
+#=================création des subsets de nos variables sélectionnées=================#
 
 CatAusCarac.shave = subset.data.frame(CatAusCarac,select =  Caracs)
 CatAusGPS.shave = subset.data.frame(CatAusGPS,select =  GPS)
 colnames(CatAusGPS.shave)[5] = "animal.id"
 
-## separating : 
-#"animal.comments" and  "manipulation.comments" int : 
-# "Hunt", "N.pray" et "Hrs.indors", "N.neigbours"
+#--------------------------------------------------------------------------------#
+# séparation de  :                                                               #
+#"animal.comments" et  "manipulation.comments" en:                               #
+# "Hunt", "N.pray" et "Hrs.indors", "N.neigbours"                                #
+#--------------------------------------------------------------------------------#
 
-## 1. creating the empty recieving dataframe : 
+#-----------------création du tableau vide de sortie : -----------------# 
 
 NewRows = matrix(nrow = length(CatAusCarac.shave[,1]), ncol = 9)
 colnames(NewRows) = c("animal.id","Hunt", "N.pray", "Hrs.indors", "N.neigbours",
                       "StartDate","StartHours","EndDate","EndHours")
 
-## 2. creating the pattern :
+#-----------------création des patterns : -----------------# 
 
-# the patern to separate the bool for hunting and the numbers of pray
+#_________________Pattern pour séparer le booléen de l'état de chasse et le nombre de proie_________________#
 hunt.pattern = "Hunt:\\s*(Yes|No)"
 prey.pattern = "prey_p_month:\\s*(\\d+)"
 
-# the patern to separate the numbers of hours form the number of cats sharing the same roof
+#_________________Pattern pour séparer le nombre d'heure à l'interieur et le nombre de chats cotoyées_________________#
 hrs.pattern = "hrs_indoors:\\s*(\\d+)"
 cats.pattern = "n_cats:\\s*(\\d+)"
 
-# the patern to separate separating the date from teh time of the day
+#_________________Pattern pour séparer les minutes/heure des jours/mois_________________#
 date_pattern = "(\\d{4}-\\d{2}-\\d{2})"
 time_pattern = "(\\d{2}:\\d{2}:\\d{2}\\.\\d{3})"
 
-## 3. using a for loop to apply each pattern in order to extract the data
+
+#-----------------Utilisation d'une boucle pour appliquer le pattern à chaque ligne des caracs : -----------------# 
 
 for (i in 1:length(CatAusCarac.shave[,1])){
     ligne = subset(CatAusCarac.shave[i,], 
                    select = c("animal.comments","manipulation.comments",
                               "deploy.on.date","deploy.off.date"))
-    # la ça va être "crispy"
-    
+
     # usage de chaque pattern
-    fooHunt = str_match(ligne[1], hunt.pattern)[2]
-    fooPray = str_match(ligne[1], prey.pattern)[2]
-    fooHrs = str_match(ligne[2], hrs.pattern)[2]
-    fooCats = str_match(ligne[2], cats.pattern)[2]
-    fooStartDate = str_match(ligne[3], date_pattern)[2]
-    fooStartHours = str_match(ligne[3], time_pattern)[2]
-    fooEndDate = str_match(ligne[4], date_pattern)[2]
-    fooendHours = str_match(ligne[4], time_pattern)[2]
+    fooHunt = str_match(ligne[1], hunt.pattern)[2]        # chasse?
+    fooPray = str_match(ligne[1], prey.pattern)[2]        # nombre de proie
+    fooHrs = str_match(ligne[2], hrs.pattern)[2]          # nombre d'heure intérieure
+    fooCats = str_match(ligne[2], cats.pattern)[2]        # nombre de chats côtoyées
+    fooStartDate = str_match(ligne[3], date_pattern)[2]   # date de début
+    fooStartHours = str_match(ligne[3], time_pattern)[2]  # heure de début
+    fooEndDate = str_match(ligne[4], date_pattern)[2]     # date de fin
+    fooendHours = str_match(ligne[4], time_pattern)[2]    # heure de fin
     fooID = CatAusCarac.shave[i,]$animal.id
-    # on applique les données extraites par ligne (l'interêt de la boucle)
+    
+    # on applique les données extraites par ligne 
     NewRows[i,] = c(fooID,fooHunt,fooPray,fooHrs,fooCats,fooStartDate,
                     fooStartHours,fooEndDate,fooendHours)
 }
 
-## 4. applying the resulting data inside the cat's data table
+
+#-----------------application des résultats dans le tableau de départ-----------------#
 
 FullAusCarac = left_join(CatAusCarac.shave, data.frame(NewRows),
                          by = "animal.id") 
 
-## 5. removing the old colums
+#-----------------Suppression des vielles colonnes divisées par les REs-----------------#
 
 FullAusCarac = FullAusCarac[,-4] ; # removing animal.comments
 FullAusCarac = FullAusCarac[,-7]; # removing manipulation.comments
 FullAusCarac = FullAusCarac[,-2:-3] # removing the date + hours (begin and end)
 
 
-## 6. concatenatng all the sterelisation under Yes or No
+#-----------------Concaténation des stérilisation sous "Sterilized", "Not Sterilized" et NA-----------------#
 
 reproductive.replacement = c("Neutered"="Sterilized","Spayed"="Sterilized","Fixed"="Sterilized",
                              "Not Fixed"="Not Sterilized", "NA"="NA")
@@ -102,26 +109,27 @@ FullAusCarac = FullAusCarac %>%
 
 write.csv(FullAusCarac, "../data/OutCatCarac.csv")
 
-################################################################################
-#concatenate the data table with the GPS info's table
-################################################################################
+
+
+#=================concatenate the data table with the GPS info's table=================#
 
 FullDataset.Cat = full_join(CatAusGPS.shave, FullAusCarac,
                             by = "animal.id")
-################################################################################
-# treat empty data :
-################################################################################
 
-# set -1 for number of neigbours and N.pray
+
+
+#=================traitement des données vides=================#
+
+#_________________-1 pour le nombre de voisin et de proie_________________#
 FullDataset.Cat$N.neigbours[is.na(FullDataset.Cat$N.neigbours)] = "-1"
 FullDataset.Cat$N.pray[is.na(FullDataset.Cat$N.pray)] = "-1"
 
-# Set NA for the others data
+#_________________NA pour toutes les autres données manquantes_________________#
 
 FullDataset.Cat[FullDataset.Cat == ""] = 'None'
 FullDataset.Cat[is.na(FullDataset.Cat)] = 'NA'
 
-## print the .csv in output
+#=================export du .csv=================#
 
 write.csv(FullDataset.Cat, "../data/OutCatdata.csv")
 
