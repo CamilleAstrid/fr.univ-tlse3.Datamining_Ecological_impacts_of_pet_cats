@@ -55,39 +55,39 @@ Après obtention de notre modèle basé sur les chats domestiques australiens, n
 
 * `README.md`  : Fichier de présentation du projet (vous y êtes !)
 * `LICENSE` : Licence d’utilisation
-* `.gitignore` : liste des fichier et/ou dossier à ignorer pour le git
+* `.gitignore` : Liste des fichiers et/ou dossiers à ignorer pour le git
 
 
 * **analysis/**
 	*  `README.md` : Fichier de présentation des méthodes d'analyses employées et les prérequis de ces dernières
-  	*  `*.png` : ensembles des images exporté de ModeleR
-  	*  `*.csv` : ensemble des sorties de `ModeleR.r`
- 	*  `clusteror.ipynb` : jupyter Python utilisant scipy, nottament les packages sklearn et auto-sklearn pour faire de la classification automatisé
+  	*  `*.png` : Ensemble des images exportées de ModeleR
+  	*  `*.csv` : Ensemble des sorties de `ModeleR.r`
+ 	*  `clusteror.ipynb` : Jupyter Python utilisant *scipy*, notamment les packages *sklearn* et *auto-sklearn* pour faire de la classification automatisée
 	*  `ModeleR.R` : Script R utilisant principalement MASS afin de classifier automatiquement les chats
 
 
 * **data/**
 	*  `README.md` : Fichier de présentation des données
-	*  `OutCatdataCaracQuanti.csv` : csv après pretraitement des caractéristiques des chats étudiés.
- 	*  **French_dataset/** : ensembles des fiches récolté par l'equipe _Félinimicon_ de chats français
-  		*  `README.md` : informations de l'obtention des données et leur source
-    	*  `CatDataFrance.csv` : fichier d'enregistrement des données
-     	*  `Felinomicon_fiche_autorisation.*` : fiche de déclaration de consentement de récupération des données
+	*  `OutCatdataCaracQuanti.csv` : Fichier csv après prétraitement des caractéristiques des chats étudiés
+ 	*  **French_dataset/** : Ensemble des fiches récoltées par l'équipe _Félinomicon_ de chats français
+  		*  `README.md` : Informations sur l'obtention des données et de leur source
+    	*  `CatDataFrance.csv` : Fichier d'enregistrement des données
+     	*  `Felinomicon_fiche_autorisation.*` : Fiche de déclaration de consentement de récupération des données
 
-	*  **pictures/** : ensembles des images des chats de **French_dataset**
+	*  **pictures/** : Ensemble des images des chats de **French_dataset**
 
 * **data.preparation/**
   	*  `README.md` : Fichier de présentation des méthodes de prétraitement et de visualisation
  	*  `DataAnalysis.*` : vignettte de prétraitement des matrices individues/variables
   	*  `Preparator.R` : Partie condensé et éxécutables de DataAnalysis pour la partie qualitatif
   	*  `PreparatorQuantitativ.R` : Partie condensé et éxécutables de DataAnalysis pour la partie quantitatif
-  	*  `TrueDataAnalysisCats.*` : vignette de prétraitement et de visualisation plus poussé des matrices individu/variables
-	*  **Figs/** : répertoire des figures R mises en cache
+  	*  `TrueDataAnalysisCats.*` : Vignette de prétraitement et de visualisation plus avancées des matrices individu/variables
+	*  **Figs/** : Répertoire des figures R
 
 
 * **rapport/**
-	* `Enonce.md` : enoncé du cahieer des charges demandé par R.barriot
- 	* `README.md` : mise en contexte du rapport
+	* `Enonce.md` : Enoncé du cahier des charges requis
+ 	* `README.md` : Mise en contexte du rapport
 
 ## Outils utilisés
 * Docker ou Docker-desktop
@@ -115,6 +115,7 @@ Packages (et leurs dépendances) :
    git clone https://github.com/CamilleAstrid/fr.univ-tlse3.Datamining_Ecological_impacts_of_pet_cats.git
    cd fr.univ-tlse3.Datamining_Ecological_impacts_of_pet_cats
    ```
+   
 2. Télécharger les données de l'analyse :
 
  ⬇️ Les données seront à télécharger à l'aide des commandes suivantes depuis ce dépôt.
@@ -131,34 +132,31 @@ Packages (et leurs dépendances) :
    ```bash
    wget https://datarepository.movebank.org/server/api/core/bitstreams/603e5745-4ad3-4b24-9a57-02675b962e93/content -O data/PetCatsAustraliaREADME
    ```
+
 > [!WARNING]
-> Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide des liens suivants :
-> * [url-dataset-australian-cats](https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027-a87c09b30804)
+> Dans le cas où le téléchargement des fichiers n'aurait pas opéré, vous trouverez les données à l'aide du lien suivant :
+> * [dataset-australian-cats](https://datarepository.movebank.org/entities/datapackage/0a9bcb2a-f031-42e7-8027-a87c09b30804)
 
-3. Téléchargement environement mamba
+3. Installation d'un conteneur Docker
 
-> [!TIP]
-> L'installation de l'environnement suivant n'est pas nécéssaire. Cependant, la présence de tous les prérequis sont indispensables sur la machine. Leur nombre étant important, nous avons mis à disposition la ligne de commande suivante afin de télécharger l'ensemble des packages requis.
-
-```bash
-mamba create -n Felinomicon r-base=4.4.2 r-tidyverse r-ggally  r-shiny r-plotly r-knitr r-magrittr r-stringr r-kableextra r-cluster r-gridextra r-factoextra r-Hmisc r-gridExtra r-grid r-uwot r-progress r-stats python=3.8 numpy pandas scipy scikit-learn matplotlib plotly ipykernel nb_conda_kernels jupyterlab auto-sklearn 
-```
-
-activation de l'environement : 
-
-```bash
-mamba activate Felinomicon
-```
-
-4. Instalation d'un contener Doclker
-
-> [!NOTE]
-> Nécécaire si vous ne possédez pas de machine Linux
+> [!CAUTION]
+> Nécessaire si vous ne possédez pas de machine Linux !
 
 Une image docker est disponible sur dockerhub. Pour le télécharger : 
 
 ```bash
 docker pull mfeurer/auto-sklearn:master # Download the docker image
+```
+
+4. Téléchargement environnement mamba
+
+> [!TIP]
+> L'installation de l'environnement suivant n'est pas nécessaire. Cependant, la présence de tous les prérequis sont indispensables sur la machine. Leur nombre étant important, nous avons mis à disposition la ligne de commande suivante afin de télécharger l'ensemble des packages requis.
+
+```bash
+mamba create -n Felinomicon r-base=4.4.2 r-tidyverse r-ggally  r-shiny r-plotly r-knitr r-magrittr r-stringr r-kableextra r-cluster r-gridextra r-factoextra r-Hmisc r-gridExtra r-grid r-uwot r-progress r-stats python=3.8 numpy pandas scipy scikit-learn matplotlib plotly ipykernel nb_conda_kernels jupyterlab auto-sklearn 
+
+mamba activate Felinomicon # Activation of the environment
 ```
 
 ## Reproduction des analyses
