@@ -1,5 +1,5 @@
 ---
-title: "DataAnalysisCats"
+title: "Vignette Preparator et PreparatorQuantitativ"
 author: "AMOUROUX Jan RODRIGES Camille-Astrid"
 date: "`r Sys.Date()`"
 output: 
@@ -15,16 +15,15 @@ knitr::opts_chunk$set(fig.align="center", fig.width=6, fig.height=6, fig.path="F
 ```
 
 ```{r, include=FALSE}
-library(ade4);  library(tidyverse);  library(GGally); library(stringr)
+library(tidyverse);  library(GGally); library(stringr)
 ```
 
-Variaable que nous voulons prédire : study.name (leur lieu de résidence)
+# Pre visualisation des données de chats d'australies
 
-## Overture des 4 csv : 
+
+## Overture des 2 csv : 
 
 ```{r}
-CatAus = read.csv("../data/Pet Cats Australia.csv"
-                  , stringsAsFactors = F)
 CatAusGPS = read.csv("../data/PetCatsAustraliaGPS"
                   , stringsAsFactors = F)
 CatAusCarac = read.csv("../data/PetCatsAustraliaCaract"
@@ -34,30 +33,37 @@ CatAusCarac = read.csv("../data/PetCatsAustraliaCaract"
 
 1er problème : tous les tableaux n'ont pas le même nombre de Variables
 
-```{r}
-summary(CatAus)
+> nécécité de concaténer les 2 csv afin d'extraires toutes informations liées aux chats à chaque signal du tracker
 
+```{r}
 summary(CatAusCarac)
 
 summary(CatAusGPS)
+```
 
+pour concaténer il faut vérifier que nous avons les mêmes noms de chats sur les 2 tableau
+
+```{r}
 unique(CatAusCarac$animal.id == CatAusCarac$deployment.id)
+```
+
+> Condition validée
+
+### Pour Caracs nous avons : 
+
+```{r}
 names(CatAusCarac)
 ```
 
+Nous allons garder : "animal.id","deploy.on.date","deploy.off.date","animal.comments","animal.life.stage",  "animal.reproductive.condition","animal.sex","manipulation.comments"
 
+### Pour la localisation, on à comme variable : 
 
-Les seules variables communes a tous les tableaux : 
+```{r}
+names(CatAusGPS)
+```
 
-Pour éviter de biaisé, nous allon sretirer les outliers (obtenu par les .marked.outliers)
-
-### Pour Caracs : 
-
-"deploy.on.date","deploy.off.date","animal.comments" et "manipulation.comments"
-
-### Pour la localisation, on garde : 
-
-"event.id","timestamp","location.long","location.lat","individual.local.identifier"
+Nous allons garder : "event.id","timestamp","location.long","location.lat","individual.local.identifier"
 
 
 ## rm des variables spécifique de chaque talbleau
@@ -77,7 +83,7 @@ colnames(CatAusGPS.shave)[5] = "animal.id"
 ```
 
 
-## Problème : la sythaxe de certaines collones mauvaise : 
+## Problème : la sythaxe de certaines collones sont mauvaise : 
 
 "animal.comments", "manipulation.comments"
 
@@ -90,7 +96,7 @@ colnames(NewRows) = c("animal.id","Hunt", "N.pray", "Hrs.indors", "N.neigbours",
                       "StartDate","StartHours","EndDate","EndHours")
 ```
 
-Ptit algo pour extraire les données : 
+Les patterns pour extraire les données : 
 
 ```{r}
 hunt.pattern = "Hunt:\\s*(Yes|No)"
@@ -105,38 +111,30 @@ time_pattern = "(\\d{2}:\\d{2}:\\d{2}\\.\\d{3})"
 ```
 
 ```{r}
+#-----------------Utilisation d'une boucle pour appliquer le pattern à chaque ligne des caracs : -----------------# 
+
 for (i in 1:length(CatAusCarac.shave[,1])){
-  ligne = subset(CatAusCarac.shave[i,], select = c("animal.comments", "manipulation.comments","deploy.on.date","deploy.off.date"))
-  # la ça va être "crispy"
-  
-  # usage de chaque pattern
-  fooHunt = str_match(ligne[1], hunt.pattern)[2]
-  fooPray = str_match(ligne[1], prey.pattern)[2]
-  fooHrs = str_match(ligne[2], hrs.pattern)[2]
-  fooCats = str_match(ligne[2], cats.pattern)[2]
-  fooStartDate = str_match(ligne[3], date_pattern)[2]
-  fooStartHours = str_match(ligne[3], time_pattern)[2]
-  fooEndDate = str_match(ligne[4], date_pattern)[2]
-  fooendHours = str_match(ligne[4], time_pattern)[2]
-  fooID = CatAusCarac.shave[i,]$animal.id
-  # on applique les données extraites par ligne (l'interêt de la boucle)
-  NewRows[i,] = c(fooID,fooHunt,fooPray,fooHrs,fooCats,fooStartDate,fooStartHours,fooEndDate,fooendHours)
+    ligne = subset(CatAusCarac.shave[i,], 
+                   select = c("animal.comments","manipulation.comments",
+                              "deploy.on.date","deploy.off.date"))
+
+    # usage de chaque pattern
+    fooHunt = str_match(ligne[1], hunt.pattern)[2]        # chasse?
+    fooPray = str_match(ligne[1], prey.pattern)[2]        # nombre de proie
+    fooHrs = str_match(ligne[2], hrs.pattern)[2]          # nombre d'heure intérieure
+    fooCats = str_match(ligne[2], cats.pattern)[2]        # nombre de chats côtoyées
+    fooStartDate = str_match(ligne[3], date_pattern)[2]   # date de début
+    fooStartHours = str_match(ligne[3], time_pattern)[2]  # heure de début
+    fooEndDate = str_match(ligne[4], date_pattern)[2]     # date de fin
+    fooendHours = str_match(ligne[4], time_pattern)[2]    # heure de fin
+    fooID = CatAusCarac.shave[i,]$animal.id
+    
+    # on applique les données extraites par ligne 
+    NewRows[i,] = c(fooID,fooHunt,fooPray,fooHrs,fooCats,fooStartDate,
+                    fooStartHours,fooEndDate,fooendHours)
 }
-
 ```
 
-
-```{r eval=FALSE, include=FALSE}
-#test 1 par 1 : 
-  ligne = subset(CatAusCarac.shave[1,], select = c("animal.comments", "manipulation.comments"))
-  # la ça va être "crispy"
-fooHunt = str_match(ligne[1], hunt.pattern)[2]
-fooPray = str_match(ligne[1], prey.pattern)[2]
-foohrs = str_match(ligne[2], hrs.pattern)[2]
-foocats = str_match(ligne[2], cats.pattern)[2]
-
-NewRows[1,] = c(fooHunt,fooPray,foohrs,foocats)
-```
 
 ## Fusionner les 2 tables : 
 
@@ -161,8 +159,9 @@ FullDataset.Cat[FullDataset.Cat == ""] = NA
 ## print le CSV en out 
 
 ```{r}
-write.csv(FullDataset.Cat, "Mafuyu.csv")
+write.csv(FullDataset.Cat, "../data/OutCatdata.csv")
 ```
+
 
 
 

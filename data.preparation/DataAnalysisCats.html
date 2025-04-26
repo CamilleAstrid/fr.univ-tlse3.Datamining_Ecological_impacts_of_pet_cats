@@ -11,7 +11,7 @@
 
 <meta name="author" content="AMOUROUX Jan RODRIGES Camille-Astrid" />
 
-<meta name="date" content="2025-04-14" />
+<meta name="date" content="2025-04-26" />
 
 <title>DataAnalysisCats</title>
 
@@ -352,56 +352,25 @@ display: none;
 
 <h1 class="title toc-ignore">DataAnalysisCats</h1>
 <h4 class="author">AMOUROUX Jan RODRIGES Camille-Astrid</h4>
-<h4 class="date">2025-04-14</h4>
+<h4 class="date">2025-04-26</h4>
 
 </div>
 
 
-<p>Variaable que nous voulons prédire : study.name (leur lieu de
-résidence)</p>
-<div id="overture-des-4-csv" class="section level2">
-<h2>Overture des 4 csv :</h2>
-<pre class="r"><code>CatAus = read.csv(&quot;../data/Pet Cats Australia.csv&quot;
-                  , stringsAsFactors = F)
-CatAusGPS = read.csv(&quot;../data/PetCatsAustraliaGPS&quot;
+<div id="pre-visualisation-des-données-de-chats-daustralies" class="section level1">
+<h1>Pre visualisation des données de chats d’australies</h1>
+<div id="overture-des-2-csv" class="section level2">
+<h2>Overture des 2 csv :</h2>
+<pre class="r"><code>CatAusGPS = read.csv(&quot;../data/PetCatsAustraliaGPS&quot;
                   , stringsAsFactors = F)
 CatAusCarac = read.csv(&quot;../data/PetCatsAustraliaCaract&quot;
                   , stringsAsFactors = F)</code></pre>
 <p>1er problème : tous les tableaux n’ont pas le même nombre de
 Variables</p>
-<pre class="r"><code>summary(CatAus)</code></pre>
-<pre><code>##     event.id           visible           timestamp         location.long  
-##  Min.   :6.332e+08   Length:1057320     Length:1057320     Min.   :134.2  
-##  1st Qu.:8.752e+08   Class :character   Class :character   1st Qu.:138.6  
-##  Median :1.111e+09   Mode  :character   Mode  :character   Median :138.6  
-##  Mean   :1.088e+09                                         Mean   :138.7  
-##  3rd Qu.:1.166e+09                                         3rd Qu.:138.7  
-##  Max.   :2.412e+09                                         Max.   :143.2  
-##                                                                           
-##   location.lat    algorithm.marked.outlier    comments      
-##  Min.   :-37.84   Length:1057320           Min.   :1        
-##  1st Qu.:-35.01   Class :character         1st Qu.:1        
-##  Median :-34.89   Mode  :character         Median :1        
-##  Mean   :-34.88                            Mean   :1        
-##  3rd Qu.:-34.78                            3rd Qu.:1        
-##  Max.   :-30.56                            Max.   :1        
-##                                            NA&#39;s   :1053558  
-##  manually.marked.outlier sensor.type        individual.taxon.canonical.name
-##  Length:1057320          Length:1057320     Length:1057320                 
-##  Class :character        Class :character   Class :character               
-##  Mode  :character        Mode  :character   Mode  :character               
-##                                                                            
-##                                                                            
-##                                                                            
-##                                                                            
-##  tag.local.identifier individual.local.identifier  study.name       
-##  Length:1057320       Length:1057320              Length:1057320    
-##  Class :character     Class :character            Class :character  
-##  Mode  :character     Mode  :character            Mode  :character  
-##                                                                     
-##                                                                     
-##                                                                     
-## </code></pre>
+<blockquote>
+<p>nécécité de concaténer les 2 csv afin d’extraires toutes informations
+liées aux chats à chaque signal du tracker</p>
+</blockquote>
 <pre class="r"><code>summary(CatAusCarac)</code></pre>
 <pre><code>##     tag.id           animal.id         animal.taxon       deploy.on.date    
 ##  Length:442         Length:442         Length:442         Length:442        
@@ -478,8 +447,15 @@ Variables</p>
 ##                                                                     
 ##                                                                     
 ## </code></pre>
+<p>pour concaténer il faut vérifier que nous avons les mêmes noms de
+chats sur les 2 tableau</p>
 <pre class="r"><code>unique(CatAusCarac$animal.id == CatAusCarac$deployment.id)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
+<blockquote>
+<p>Condition validée</p>
+</blockquote>
+<div id="pour-caracs-nous-avons" class="section level3">
+<h3>Pour Caracs nous avons :</h3>
 <pre class="r"><code>names(CatAusCarac)</code></pre>
 <pre><code>##  [1] &quot;tag.id&quot;                        &quot;animal.id&quot;                    
 ##  [3] &quot;animal.taxon&quot;                  &quot;deploy.on.date&quot;               
@@ -492,17 +468,22 @@ Variables</p>
 ## [17] &quot;study.site&quot;                    &quot;tag.manufacturer.name&quot;        
 ## [19] &quot;tag.mass&quot;                      &quot;tag.model&quot;                    
 ## [21] &quot;tag.readout.method&quot;</code></pre>
-<p>Les seules variables communes a tous les tableaux :</p>
-<p>Pour éviter de biaisé, nous allon sretirer les outliers (obtenu par
-les .marked.outliers)</p>
-<div id="pour-caracs" class="section level3">
-<h3>Pour Caracs :</h3>
-<p>“deploy.on.date”,“deploy.off.date”,“animal.comments” et
-“manipulation.comments”</p>
+<p>Nous allons garder :
+“animal.id”,“deploy.on.date”,“deploy.off.date”,“animal.comments”,“animal.life.stage”,
+“animal.reproductive.condition”,“animal.sex”,“manipulation.comments”</p>
 </div>
-<div id="pour-la-localisation-on-garde" class="section level3">
-<h3>Pour la localisation, on garde :</h3>
-<p>“event.id”,“timestamp”,“location.long”,“location.lat”,“individual.local.identifier”</p>
+<div id="pour-la-localisation-on-à-comme-variable" class="section level3">
+<h3>Pour la localisation, on à comme variable :</h3>
+<pre class="r"><code>names(CatAusGPS)</code></pre>
+<pre><code>##  [1] &quot;event.id&quot;                        &quot;visible&quot;                        
+##  [3] &quot;timestamp&quot;                       &quot;location.long&quot;                  
+##  [5] &quot;location.lat&quot;                    &quot;algorithm.marked.outlier&quot;       
+##  [7] &quot;comments&quot;                        &quot;manually.marked.outlier&quot;        
+##  [9] &quot;sensor.type&quot;                     &quot;individual.taxon.canonical.name&quot;
+## [11] &quot;tag.local.identifier&quot;            &quot;individual.local.identifier&quot;    
+## [13] &quot;study.name&quot;</code></pre>
+<p>Nous allons garder :
+“event.id”,“timestamp”,“location.long”,“location.lat”,“individual.local.identifier”</p>
 </div>
 </div>
 <div id="rm-des-variables-spécifique-de-chaque-talbleau" class="section level2">
@@ -517,15 +498,15 @@ GPS = c(&quot;event.id&quot;,&quot;timestamp&quot;,&quot;location.long&quot;,&qu
 CatAusGPS.shave = subset.data.frame(CatAusGPS,select =  GPS)
 colnames(CatAusGPS.shave)[5] = &quot;animal.id&quot;</code></pre>
 </div>
-<div id="problème-la-sythaxe-de-certaines-collones-mauvaise" class="section level2">
-<h2>Problème : la sythaxe de certaines collones mauvaise :</h2>
+<div id="problème-la-sythaxe-de-certaines-collones-sont-mauvaise" class="section level2">
+<h2>Problème : la sythaxe de certaines collones sont mauvaise :</h2>
 <p>“animal.comments”, “manipulation.comments”</p>
 <p>solution : split ces collones en nouvelles : “Hunt”, “N.pray” et
 “Hrs.indors”, “N.neigbours”</p>
 <pre class="r"><code>NewRows = matrix(nrow = length(CatAusCarac.shave[,1]), ncol = 9)
 colnames(NewRows) = c(&quot;animal.id&quot;,&quot;Hunt&quot;, &quot;N.pray&quot;, &quot;Hrs.indors&quot;, &quot;N.neigbours&quot;,
                       &quot;StartDate&quot;,&quot;StartHours&quot;,&quot;EndDate&quot;,&quot;EndHours&quot;)</code></pre>
-<p>Ptit algo pour extraire les données :</p>
+<p>Les patterns pour extraire les données :</p>
 <pre class="r"><code>hunt.pattern = &quot;Hunt:\\s*(Yes|No)&quot;
 prey.pattern = &quot;prey_p_month:\\s*(\\d+)&quot;
 
@@ -534,22 +515,27 @@ cats.pattern = &quot;n_cats:\\s*(\\d+)&quot;
 
 date_pattern = &quot;(\\d{4}-\\d{2}-\\d{2})&quot;
 time_pattern = &quot;(\\d{2}:\\d{2}:\\d{2}\\.\\d{3})&quot;</code></pre>
-<pre class="r"><code>for (i in 1:length(CatAusCarac.shave[,1])){
-  ligne = subset(CatAusCarac.shave[i,], select = c(&quot;animal.comments&quot;, &quot;manipulation.comments&quot;,&quot;deploy.on.date&quot;,&quot;deploy.off.date&quot;))
-  # la ça va être &quot;crispy&quot;
-  
-  # usage de chaque pattern
-  fooHunt = str_match(ligne[1], hunt.pattern)[2]
-  fooPray = str_match(ligne[1], prey.pattern)[2]
-  fooHrs = str_match(ligne[2], hrs.pattern)[2]
-  fooCats = str_match(ligne[2], cats.pattern)[2]
-  fooStartDate = str_match(ligne[3], date_pattern)[2]
-  fooStartHours = str_match(ligne[3], time_pattern)[2]
-  fooEndDate = str_match(ligne[4], date_pattern)[2]
-  fooendHours = str_match(ligne[4], time_pattern)[2]
-  fooID = CatAusCarac.shave[i,]$animal.id
-  # on applique les données extraites par ligne (l&#39;interêt de la boucle)
-  NewRows[i,] = c(fooID,fooHunt,fooPray,fooHrs,fooCats,fooStartDate,fooStartHours,fooEndDate,fooendHours)
+<pre class="r"><code>#-----------------Utilisation d&#39;une boucle pour appliquer le pattern à chaque ligne des caracs : -----------------# 
+
+for (i in 1:length(CatAusCarac.shave[,1])){
+    ligne = subset(CatAusCarac.shave[i,], 
+                   select = c(&quot;animal.comments&quot;,&quot;manipulation.comments&quot;,
+                              &quot;deploy.on.date&quot;,&quot;deploy.off.date&quot;))
+
+    # usage de chaque pattern
+    fooHunt = str_match(ligne[1], hunt.pattern)[2]        # chasse?
+    fooPray = str_match(ligne[1], prey.pattern)[2]        # nombre de proie
+    fooHrs = str_match(ligne[2], hrs.pattern)[2]          # nombre d&#39;heure intérieure
+    fooCats = str_match(ligne[2], cats.pattern)[2]        # nombre de chats côtoyées
+    fooStartDate = str_match(ligne[3], date_pattern)[2]   # date de début
+    fooStartHours = str_match(ligne[3], time_pattern)[2]  # heure de début
+    fooEndDate = str_match(ligne[4], date_pattern)[2]     # date de fin
+    fooendHours = str_match(ligne[4], time_pattern)[2]    # heure de fin
+    fooID = CatAusCarac.shave[i,]$animal.id
+    
+    # on applique les données extraites par ligne 
+    NewRows[i,] = c(fooID,fooHunt,fooPray,fooHrs,fooCats,fooStartDate,
+                    fooStartHours,fooEndDate,fooendHours)
 }</code></pre>
 </div>
 <div id="fusionner-les-2-tables" class="section level2">
@@ -570,7 +556,8 @@ FullDataset.Cat[FullDataset.Cat == &quot;&quot;] = NA</code></pre>
 </div>
 <div id="print-le-csv-en-out" class="section level2">
 <h2>print le CSV en out</h2>
-<pre class="r"><code>write.csv(FullDataset.Cat, &quot;Mafuyu.csv&quot;)</code></pre>
+<pre class="r"><code>write.csv(FullDataset.Cat, &quot;../data/OutCatdata.csv&quot;)</code></pre>
+</div>
 </div>
 
 

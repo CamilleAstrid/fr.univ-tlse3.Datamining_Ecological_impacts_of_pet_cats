@@ -1,5 +1,5 @@
 ---
-title: "DataAnalysisTrueData"
+title: "Prétraitement et visualisation"
 author: "AMOUROUX Jan RODRIGUES Camille-Astrid BRAHIMI Celia"
 date: "`r Sys.Date()`"
 output: html_document
@@ -7,14 +7,14 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include=FALSE, eval=F}
-knitr::opts_chunk$set(fig.align="center", fig.width=6, fig.height=6, fig.path="Figs/", echo=TRUE, warning=FALSE, message=FALSE, cache=TRUE)
+```{r setup, include=FALSE, eval=T}
+knitr::opts_chunk$set(fig.align="center", fig.width=6, fig.height=6, fig.path="Figs/", echo=TRUE, warning=FALSE, message=FALSE, cache=F)
 ```
 
 # Importation des librairies
 
-```{r}
-library(plotly) ; library(magrittr) ; library(factoextra) ; library(tidyverse);  library(GGally); library(stringr); library(Hmisc)
+```{r,  message=FALSE, warning=FALSE}
+library(plotly); library(magrittr); library(factoextra); library(tidyverse);  library(GGally); library(stringr); library(Hmisc)
 ```
 
 # Chargement des données
@@ -26,9 +26,9 @@ OutCatdataQuanti = read.csv("../data/OutCatdataQuantitativ.csv", stringsAsFactor
 
 # Analyse des données au format qualitatif
 
-## Prévisualisation des données
+## Prévisualisation des données (déjà présnent dans DataAnalysisCats ne sera donc pas exécuter ici)
 
-```{r, eval= F, include= F}
+```{r, eval= F, include= T}
 # Résumé des informations du fichier
 summary(OutCatdata)
 
@@ -59,20 +59,27 @@ length(unique(OutCatdata$animal.id))
 
 ## Visualisation à l'aide de graphique
 
-cf TP1 sur les champignons
-
 ### Epurer les données
+
+Nous allons dans un premier temps chercher à rendre le plus de données possible qualitative.
+
+Suppression des colonnes 1 jusqu'à 5, soit : `"event.id"`, `"timestamp"`, `"location.long"`, `"location.lat"`
+sachant que la première est juste un comteur du nombre de ligne
+
+puis des colonnes 9 à 12, soit : `"StartDate"`, `"StartHours"`, `"EndDate"`, `"EndHours"`
 
 ```{r}
 CatDataquali = OutCatdata[,-1:-5]
-CatDataquali = (CatDataquali[,-9:-12])
+CatDataquali = (CatDataquali[,-10:-13])
 ```
 
 ### Convertir les *int* en facteurs
 
+Toujours dans l'optique d'avoir le plus de variable qualitatives.
+
 ```{r}
 CatDataquali$N.pray = as.factor(CatDataquali$N.pray) ;
-CatDataquali$N.neigbours = as.factor(CatDataquali$N.neigbours) 
+CatDataquali$N.neigbours = as.factor(OutCatdata$N.neigbours) 
 ```
 
 ### Modification de l'âge pour ajouter un 0 au début afin de trier les chiffres par ordre croissant : 
@@ -86,10 +93,14 @@ CatDataquali$Hrs.indors = order[ CatDataquali$Hrs.indors ] %>% as.factor
 On a des variables avec beaucoup de niveaux (nom, dates) nous allons les retirer car cela ralentit le temps de calcul et va génerer des règles trop spécifiques (le nom surtout) 
 
 ```{r}
-trimmedCatDataquali = CatDataquali[,-1]
-trimmedCatDataquali = trimmedCatDataquali[,-8:-11]
+trimmedCatDataquali = CatDataquali[,-1] #supprme l'indice de ligne
+trimmedCatDataquali = trimmedCatDataquali[,-1] # suppression de la date de début
+names(trimmedCatDataquali)
 ```
 
+nous avons un tableau avec les variables : 
+
+`"animal.life.stage"`, `"animal.reproductive.condition"`, `"animal.sex"`, `"Hunt"`, `"N.pray"`, `"Hrs.indors"`, `"N.neigbours"`
 
 ### Application du TP
 
@@ -207,8 +218,8 @@ Les dates de début et de fin ont un impact trop fort sur le jeu de données. On
 
 ```{r}
 trimmedCatDataquanti = CatDataquanti
-trimmedCatDataquanti$StartDate <- as.Date(as.character(trimmedCatDataquanti$StartDate), format = "%Y-%m-%d")
-trimmedCatDataquanti$EndDate <- as.Date(as.character(trimmedCatDataquanti$EndDate), format = "%Y-%m-%d")
+trimmedCatDataquanti$StartDate = as.Date(as.character(trimmedCatDataquanti$StartDate), format = "%Y-%m-%d")
+trimmedCatDataquanti$EndDate = as.Date(as.character(trimmedCatDataquanti$EndDate), format = "%Y-%m-%d")
 
 trimmedCatDataquanti$StartDate = as.numeric(format((trimmedCatDataquanti$StartDate), "%m"))
 trimmedCatDataquanti$EndDate = as.numeric(format((trimmedCatDataquanti$EndDate), "%m"))
@@ -217,11 +228,11 @@ trimmedCatDataquanti$EndDate = as.numeric(format((trimmedCatDataquanti$EndDate),
 Les heures de début et de fin ont maintenant un impact trop fort sur le jeu de données. On va tenter de les conserver en ne notant que l'heure de sortie.
 
 ```{r}
-trimmedCatDataquanti$StartHours <- strptime(trimmedCatDataquanti$StartHours, format = "%H:%M:%S")
-trimmedCatDataquanti$StartHours <- as.numeric(format((trimmedCatDataquanti$StartHours), "%H"))
+trimmedCatDataquanti$StartHours = strptime(trimmedCatDataquanti$StartHours, format = "%H:%M:%S")
+trimmedCatDataquanti$StartHours = as.numeric(format((trimmedCatDataquanti$StartHours), "%H"))
 
-trimmedCatDataquanti$EndHours <- strptime(trimmedCatDataquanti$EndHours, format = "%H:%M:%S")
-trimmedCatDataquanti$EndHours <- as.numeric(format((trimmedCatDataquanti$EndHours), "%H"))
+trimmedCatDataquanti$EndHours = strptime(trimmedCatDataquanti$EndHours, format = "%H:%M:%S")
+trimmedCatDataquanti$EndHours = as.numeric(format((trimmedCatDataquanti$EndHours), "%H"))
 ```
 
 Retirer les noms et modifier la colonne animal.reproductive.condition
