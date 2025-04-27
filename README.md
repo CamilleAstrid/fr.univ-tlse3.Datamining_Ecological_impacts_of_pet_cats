@@ -105,7 +105,9 @@ Packages (et leurs dépendances) :
 ![R-package](https://img.shields.io/badge/R-factoextra-red) ![R-package](https://img.shields.io/badge/R-Hmisc-red) ![R-package](https://img.shields.io/badge/R-gridExtra-red) ![R-package](https://img.shields.io/badge/R-grid-red) ![R-package](https://img.shields.io/badge/R-uwot-red) ![R-package](https://img.shields.io/badge/R-progress-red) ![R-package](https://img.shields.io/badge/R-stats-red)
 
 
-![Python-package](https://img.shields.io/badge/Python-numpy-lightblue) ![Python-package](https://img.shields.io/badge/Python-pandas-lightblue) ![Python-package](https://img.shields.io/badge/Python-scipy-lightblue) ![Python-package](https://img.shields.io/badge/Python-scikit_learn-lightblue) ![Python-package](https://img.shields.io/badge/Python-matplotlib-lightblue) ![Python-package](https://img.shields.io/badge/Python-plotly-lightblue) ![Python-package](https://img.shields.io/badge/Python-ipykernel-lightblue) ![Python-package](https://img.shields.io/badge/Python-nb_conda_kernels-lightblue) ![Python-package](https://img.shields.io/badge/Python-jupyterlab-lightblue) ![Python-package](https://img.shields.io/badge/Python-auto_sklearn-lightblue)
+![Python-package](https://img.shields.io/badge/Python-numpy-lightblue) ![Python-package](https://img.shields.io/badge/Python-pandas-lightblue) ![Python-package](https://img.shields.io/badge/Python-scipy-lightblue) ![Python-package](https://img.shields.io/badge/Python-scikit_learn-lightblue) ![Python-package](https://img.shields.io/badge/Python-matplotlib-lightblue)
+
+![Python-package](https://img.shields.io/badge/Python-plotly-lightblue) ![Python-package](https://img.shields.io/badge/Python-ipykernel-lightblue) ![Python-package](https://img.shields.io/badge/Python-nb_conda_kernels-lightblue) ![Python-package](https://img.shields.io/badge/Python-jupyterlab-lightblue) ![Python-package](https://img.shields.io/badge/Python-auto_sklearn-lightblue)
 
 
 ## Installation
