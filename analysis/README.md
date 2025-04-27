@@ -12,7 +12,7 @@ pip install auto-sklearn
 
 ## Utilisation de Docker pour Windows
 
-Dans le cas où vous utilisez un Windows $^T^m$ .
+Dans le cas où vous utilisez un Windows  .
 
 ### Prérequis : 
 
