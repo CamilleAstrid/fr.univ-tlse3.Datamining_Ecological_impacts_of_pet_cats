@@ -14,7 +14,7 @@ knitr::opts_chunk$set(fig.align="center", fig.width=6, fig.height=6, fig.path="F
 # Importation des librairies
 
 ```{r,  message=FALSE, warning=FALSE}
-library(plotly); library(magrittr); library(factoextra); library(tidyverse);  library(GGally); library(stringr); library(Hmisc)
+library(plotly); library(magrittr); library(factoextra); library(tidyverse);  library(GGally); library(stringr); library(Hmisc); library(dbplyr)
 ```
 
 # Chargement des données
@@ -134,7 +134,7 @@ stockage de Hunt dans `classes` et le tableau variables dans `Vars`
 ```{r}
 classes = trimmedCatDataquali$Hunt
 
-Vars = trimmedCatDataquali%>% select(-Hunt)
+Vars = trimmedCatDataquali%>% dplyr::select(-Hunt)
 ```
 
 
@@ -261,10 +261,23 @@ boxplot(CataDataQuantiNormZ, col = rainbow(length(CataDataQuantiNormZ)))
 title(main = "Boxplots des modalités analysées", sub = "après normalisation")
 ```
 
+```{r}
+FrenchData = read.csv("../data/French_dataset/CatDataFrance.csv")
+FrenchData = FrenchData[,-1:-5]
+
+FrenchData = FrenchData[,-7:-10]
+
+FrenchDataNormZ = FrenchData %>%
+  mutate(across(colnames(FrenchData), scale))
+```
+
+
 Exportation des données normalisées
 
 ```{r}
 write.csv(CataDataQuantiNormZ, "../data/OutCatdataQuantiNormZ.csv")
+
+write.csv(FrenchDataNormZ, "../data/OutCatdataFrenchNormZ.csv")
 ```
 
 
