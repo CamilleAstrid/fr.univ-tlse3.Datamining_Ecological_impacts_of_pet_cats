@@ -1,31 +1,11 @@
-##################################################################################
-# BAC A SABLE
-mat = as.array(matrix(c(rep(1,999),NA),1e4,14))
-mat = cleanData(mat, colnames(mat))
-
-mat2 = as.array(matrix(c(rep(1,3),NA),6,6))
-mat2
-listName = c("a", "b", "c", "d", "e", "f")
-colnames(mat2) = listName
-rownames(mat2) = listName
-mat2
-mat2 = cleanData(mat2, c("a", "b", "c", "d", "e"))
-mat2
-
-fooNames = colnames(tb)
-unique(match("N.pray", fooNames))
-typeof(tb[80221,"N.pray"])
-is.na(tb[80221,"N.pray"])
-typeof(NA)
-typeof(NULL)
-
-pos_list <- list()
-for (colonne in pos_col){
-  indice = match(colonne, colnames(tableau))
-  pos_list = append(pos_list, indice)
-}
-##################################################################################
-
+#=========================================================================================####
+#                  Début de la création d'un modèle prédictif en R                           #
+#                                                                                            #
+# Bienvenue dans un nouveau chapitre de Félinomicon : l'algorithme occulte du félin moderne. #
+# Si vous vous êtes aventuré jusque là, vous êtes prêt à découvrir la vérité !               #
+# Accrochez-vous !                                                                           #
+#                                                                                            #
+#============================================================================================#
 
 
 #=================Chargement des librairies=================####
@@ -80,8 +60,16 @@ cleanData <- function(tableau, pos_col){
   #' @importFrom
   #####
   beep("ready")
-  docstring(cleanData)
-  listeIndexNA = list() ; n_iter = length(tableau[,1])
+  listeIndexNA = c()
+  if (length(tableau[,1])==1)
+    n_iter = as.numeric(count(tableau[,1]))
+  else
+    n_iter = length(tableau[,1])
+  pos_list = c()
+  for (colonne in pos_col){
+    indice = match(colonne, colnames(tableau))
+    pos_list = append(pos_list, indice)
+  }
   pb <- progress_bar$new(format = "(:spin) <:bar> :percent Reading... [Elapsed time: :elapsedfull || Estimated time remaining: :eta]",
                           total = n_iter,
                           complete = "=",   # Completion bar character
@@ -94,11 +82,6 @@ cleanData <- function(tableau, pos_col){
     #___
     # Code to be executed
     #___
-    pos_list <- list()
-    for (colonne in pos_col){
-      indice = match(colonne, colnames(tableau))
-      pos_list = append(pos_list, indice)
-    }
     for (element in pos_list){
       if (is.na(tableau[i, element])){
         listeIndexNA = append(listeIndexNA, i)
@@ -135,9 +118,9 @@ prePurEnt <- function(k, tableau, classeName, typeAnalyse){
   #####
   #' Fonction prePurEnt
   #' 
-  #' @description Fonction permettant d'obtenir la pureté associée à plusieurs kmeanS.
+  #' @description Fonction effectuant le prétraitement pour la pureté ou l'entropie associée à un kmean.
   #' 
-  #' @param taille vector. Correspond aux valeurs de kmeans pour faire le test de pureté.
+  #' @param k vector. Correspond aux valeurs de kmeans pour faire les tests.
   #' \subsection{Par défaut}{
   #' taille = seq(2,20)
   #' Le vecteur prend des valeurs de kmeans de 2 à 20 avec un pas de 1.
@@ -150,14 +133,13 @@ prePurEnt <- function(k, tableau, classeName, typeAnalyse){
   #' \subsection{Attention}{
   #' Ce vecteur est composé de chaînes de caractères et non de valeurs numériques.
   #' }
+  #' @param typeAnalyse Correspond au type de traitement à réaliser : "entropy" ou "purity".
   #' 
   #' @usage
-  #' purities(taille, tableau, classeName)
-  #' purities(tableau, classeName)
+  #' prePurEnt(k, tableau, classeName, typeAnalyse)
   #' 
-  #' @return list. Les valeurs de pureté associées aux kmeans.
-  #' 
-  #' @import function. purity()
+  #' @return list. La valeur de pureté/entropie associée au kmean.
+  #####
   beep("ready")
   classes = classeName
   km = df %>% kmeans(centers=k)
@@ -195,6 +177,7 @@ purity <- function(k, tableau, classeName){
   #' 
   #' @return numeric. La valeur de la pureté associée au kmeans.
   #' 
+  #' @import prePurEnt
   #####
   res = prePurEnt(k, tableau, classeName, "purity")
   return(res)
@@ -234,14 +217,97 @@ purities <- function(taille = seq(2,20), tableau, classeName){
 }
 
 entropy <- function(k,tableau, classeName){
+  #####
+  #' Fonction entropy
+  #' 
+  #' @description Fonction permettant de mesurer l'entropy des clusters et
+  #' donc de la bonne répartition des individus dans leur groupe respectif.
+  #' 
+  #' @param k int. Correspond à la valeur de kmeans pour faire le test d'entropy.
+  #' @param tableau array. Correspond au tableau à traiter.
+  #' @param classeName character. Correspond au nom de la colonne où figure les classes.
+  #' \subsection{Attention}{
+  #' Ce vecteur est composé de chaînes de caractères et non de valeurs numériques.
+  #' }
+  #' 
+  #' @usage entropy(k, tableau, classeName)
+  #' 
+  #' @return numeric. La valeur de l'entropie associée au kmean.
+  #' 
+  #' @import prePurEnt
+  #####
   res = prePurEnt(k, tableau, classeName, "entropy")
   return(res)
 }
 
 entropies <- function(taille = seq(2,20), tableau, classeName){
+  #####
+  #' Fonction entropies
+  #' 
+  #' @description Fonction permettant d'obtenir l'entropie associée à plusieurs kmeanS.
+  #' 
+  #' @param taille vector. Correspond aux valeurs de kmeans pour faire le test d'entropie.
+  #' \subsection{Par défaut}{
+  #' taille = seq(2,20)
+  #' Le vecteur prend des valeurs de kmeans de 2 à 20 avec un pas de 1.
+  #' }
+  #' \subsection{Attention}{
+  #' Ce vecteur est composé de valeurs numériques et non de chaînes de caractères.
+  #' }
+  #' @param tableau array. Correspond au tableau à traiter.
+  #' @param classeName character. Correspond au nom de la colonnes où figure les classes.
+  #' \subsection{Attention}{
+  #' Ce vecteur est composé de chaînes de caractères et non de valeurs numériques.
+  #' }
+  #' 
+  #' @usage
+  #' entropies(taille, tableau, classeName)
+  #' entropies(tableau, classeName)
+  #' 
+  #' @return list. Les valeurs d'entropie associées aux kmeans.
+  #' 
+  #' @import function. entropy()
+  #####
   res = sapply(taille, function(k){entropy(k, tableau, classeName)})
   beep("fanfare")
   return(res)
+}
+
+silhouette <- function(x, clusters){
+  #####
+  #' Fonction silhouette
+  #' 
+  #' @description Fonction permettant d'obtenir la silhouette des clusters.
+  #' 
+  #' @param x array. Correspond au tableau à traiter.
+  #' @param clusters vector. Correspond aux clusters.
+  #' \subsection{Attention}{
+  #' Ce vecteur est composé de valeurs numériques et non de chaînes de caractères.
+  #' }
+  #' 
+  #' @usage
+  #' silhouette(x, clusters)
+  #' 
+  #' @return list. La fonction retourne une liste avec les coefficients de silhouette pour :
+  #' * chaque individu
+  #' * chaque cluster
+  #' * le clustering
+  #' 
+  #####
+  d <- as.matrix(dist(x))
+  si <- sapply(1:length(clusters), function(i){
+    vi <- d[i,]
+    ki <- clusters[i]
+    di <- tapply(vi[-i], clusters[-i], mean)
+    ai = min(tapply(vi[-i], clusters[-i], mean)[clusters[i]])
+    bi = min(tapply(vi[-i], clusters[-i], mean)[-clusters[i]])
+    si = (bi-ai)/max(ai, bi)
+  })
+  list(
+    individuals = si,
+    clusters = tapply(si, clusters, mean),
+    clustering = mean(si)
+  )
 }
 
 #=================Chargement des données=================#####
@@ -415,7 +481,7 @@ ggsave(filename = "data/pictures/Boxplots_Chasseurs_Normalisation.png", scale = 
 
 #=================Transformation des données=================#####
 tbz = tbg %>% 
-  select(rowid, Hunt, variable, value.z) %>%
+  dplyr::select(rowid, Hunt, variable, value.z) %>%
   pivot_wider(names_from = variable, values_from=value.z)
 
 
@@ -429,12 +495,12 @@ ggsave(filename = "data/pictures/Analyses_bivariees.png", scale = 3, plot = g)
 
 #=================Matrices de corrélations=================#####
 g <- tb %>%
-  select(-Hunt) %>%
+  dplyr::select(-Hunt) %>%
   ggcorr()
 ggsave(filename = "data/pictures/Matrice_de_correlation.png", scale = 3, plot = g)
 
 g <-tbz %>%
-  select(-Hunt) %>%
+  dplyr::select(-Hunt) %>%
   ggcorr()
 ggsave(filename = "data/pictures/Matrice_de_correlation_Normalisation.png", scale = 3, plot = g)
 
@@ -452,12 +518,12 @@ unique(is.na.data.frame(tb)) # Vérification de la présence de NA value
 write.csv(tb, file = "../data/OutCatdataQuantiNormZNoNA.csv") # Ecriture des données dans un fichier pour limiter le temps de calcul
 
 # Ligne à mettre en commentaires une fois le script finalisé
-tb = read.csv(file = "../data/OutCatdataQuantiNormZNoNA.csv") # Lecture des données précédentes pour limiter le temps de calcul pendant les tests
+# tb = read.csv(file = "../data/OutCatdataQuantiNormZNoNA.csv") # Lecture des données précédentes pour limiter le temps de calcul pendant les tests
 
 
 #-----------------Calcul ACP-----------------#####
 tb.acp = tb %>% 
-  select(-Hunt) %>% 
+  dplyr::select(-Hunt) %>% 
   as.matrix %>% 
   princomp(cor=T)
 
@@ -502,7 +568,7 @@ ggsave(filename = "data/pictures/ACP_normee_CatsAust_factoextra.png", scale = 3,
 
 #_________________Création de la matrice de distance_________________#####
 mdist = tbz %>% 
-  select(animal.sex:animal.age) %>% 
+  dplyr::select(animal.sex:animal.age) %>% 
   dist(method="euclidean") 
 mat = as.matrix(mdist)[1:10, 1:10] %>% round(2)
 
@@ -527,15 +593,13 @@ g <- pl.mds
 ggsave(filename = "data/pictures/Projection_MDS.png", scale = 3, plot = g)
 
 
-#######################################################################
-#                             TO DO                                   #
-#######################################################################
 #.................ACP pour conservation des coordonnées des individus sur les 2 premières composantes.................#
 unique(is.na.data.frame(tbz)) # Vérification de la présence de NA value
-tbz = cleanData(tableau = tbz, pos_col = colnames(tbz)) # Suppression des NA
+positionIndex = colnames(tbz)
+tbz = cleanData(tableau = tbz, pos_col = positionIndex) # Suppression des NA
 unique(is.na.data.frame(tbz)) # Vérification de la présence de NA value
 tbz.acp = tbz %>% 
-  select(animal.sex:animal.age) %>% 
+  dplyr::select(animal.sex:animal.age) %>% 
   as.matrix %>% 
   princomp(cor=F)
 #.................Ajout des coordonnées.................#####
@@ -551,7 +615,7 @@ g <- pl.acp
 ggsave(filename = "data/pictures/Projection_ACP.png", scale = 3, plot = g)
 #.................Même chose avec UMAP.................#####
 tbz.umap <- tbz %>% 
-  select(animal.sex:animal.age) %>%
+  dplyr::select(animal.sex:animal.age) %>%
   umap
 colnames(tbz.umap) <- c('umap.x', "umap.y")
 tbz <- tbz %>% 
@@ -595,11 +659,13 @@ close(fileConn)
 
 
 #-----------------Affichage du plot-----------------#####
-df = tbz %>% select(animal.sex:animal.age)
+df = tbz %>% dplyr::select(animal.sex:animal.age)
 km.3 = df %>% kmeans(centers=3)
 tbz = tbz %>% mutate(kmeans.3=as.factor(c('A', 'B', 'C') [km.3$cluster]))
-g = tbz
-ggsave(filename = "data/pictures/Clustering_kmeans.png", scale = 3, plot = g)
+
+fileConn <- file('data/pictures/Clustering_kmeans.csv')
+capture.output(tbz, file = "data/pictures/Clustering_kmeans.csv", append = F)
+close(fileConn)
 
 
 
@@ -622,26 +688,11 @@ ggsave(filename = "data/pictures/Clustering_kmeans.png", scale = 3, plot = g)
 #--------------------------------------------------------------------------------#
 
 #-----------------Etude pour toutes les valeurs-----------------#####
-mdist = tbz %>% select(animal.sex:animal.age) %>% dist(method = "euclidean")
-silhouette <- function(x, clusters){
-  d <- as.matrix(dist(x))
-  si <- sapply(1:length(clusters), function(i){
-    vi <- d[i,]
-    ki <- clusters[i]
-    di <- tapply(vi[-i], clusters[-i], mean)
-    ai = min(tapply(vi[-i], clusters[-i], mean)[clusters[i]])
-    bi = min(tapply(vi[-i], clusters[-i], mean)[-clusters[i]])
-    si = (bi-ai)/max(ai, bi)
-  })
-  list(
-    individuals = si,
-    clusters = tapply(si, clusters, mean),
-    clustering = mean(si)
-  )
-}
-silhouette(df, km.3$cluster)
-
-
+mdist = tbz %>% dplyr::select(animal.sex:animal.age) %>% dist(method = "euclidean")
+s <- silhouette(df, km.3$cluster)
+fileConn <- file('data/files/silhouette.csv')
+capture.output(s, file = 'data/files/silhouette.csv', append = F)
+close(fileConn)
 
 #=================Détermination du nombre de clusters=================#####
 
@@ -653,15 +704,10 @@ allures <- sapply(2:20, function(k){
 
 
 #-----------------Visualisation-----------------#####
-g <- (plot(x = 2:20, y = allures,
+maxi = c(2:20)[which.max(allures)]
+g <- qplot(x = 2:20, y = allures,
         xlab="Nombre de clusters (k)",
-        ylab="Coefficient de silhouette",
-        type = "b") +
-      maxi = c(2:20)[which.max(allures)] +
-      value_max = as.character(maxi) +
-      abline(v = maxi, col = "red", lty = 2) +
-      text(x = maxi+2, y=max(allures), labels = paste("k =",value_max), col = "red")
-)
+        ylab="Coefficient de silhouette")
 ggsave(filename = "data/pictures/Valeurs_kmeans.png", scale = 3, plot = g)
 
 
@@ -671,73 +717,77 @@ ggsave(filename = "data/pictures/Valeurs_kmeans.png", scale = 3, plot = g)
 #-----------------Etude pour tous les k (de 2 à 20) : pureté-----------------#####
 classes = tbz$Hunt
 purityValue = purities(tableau = tbz, classeName = classes)
-
-g <- (plot.default(x = 2:20,
-             y = purityValue,
+maxi = c(2:20)[which.max(purityValue)]
+g <- qplot(x = 2:20, y = purityValue,
              xlab="Nombre de clusters (k)",
-             ylab="Pureté",
-             type = "b") +
-      moy = round(mean(purityValue), 2) +
-      value_moy = as.character(moy) +
-      abline(h = moy, col = "red", lty = 2) +
-      ypos = moy - 0.2 +
-      text(x = 10, y=ypos, labels = paste("moyenne =",value_moy), col = "red")
-)
-ggsave(filename = "data/pictures/etude_purete.png", scale = 3, plot = g)
+             ylab="Pureté")
+ggsave(filename = "data/pictures/Etude_purete.png", scale = 3, plot = g)
 
 
 #-----------------Etude pour tous les k (de 2 à 20) : entropie-----------------#####
-entropyValue = entropies(tableau = tbz, classeName = classes)
+##############################################################################################################################
+# !CAUTION! cette section n'est pas à jour ! En attente d'amélioration...
+#
+# Error:
+#  ! Discrete values supplied to continuous scale.
+# ℹ Example values: c(-0.282037203369512, 0, -0.28434008745721, 0, -0.247706478836637, 0), 0, c(-0.173286795139986,
+# -0.223940500682236, -0.306106068597901, -0.333282120741939, -0.19917540397856, -0.315852966972101, -0.281900384144421,
+# -0.262199291105524, -0.130238193703063, -0.240337311872295, -0.264409561758861, -0.278556767806123), 0, and
+# c(-0.310640478867201, -0.224709469717554, -0.303875717229021, 0, 0, -0.349560171046532, -0.275047868430025,
+#  -0.232582442887001, -0.188504094972518, -0.116839968546457, 0, -0.349560171046532, -0.263830971032135, -0.176650524972593,
+#  -0.212109964535855, -0.259930192709979, 0, -0.351259840346582)
+# Run `rlang::last_trace()` to see where the error occurred.
+##############################################################################################################################
 
-g <- (plot.default(x = 2:20,
-                   y = entropyValue,
-                   xlab="Nombre de clusters (k)",
-                   ylab="Pureté",
-                   type = "b") +
-        moy = round(mean(entropyValue), 2) +
-        value_moy = as.character(moy) +
-        abline(h = moy, col = "red", lty = 2) +
-        ypos = moy - 0.2 +
-        text(x = 10, y=ypos, labels = paste("moyenne =",value_moy), col = "red")
-)
-ggsave(filename = "data/pictures/etude_entropy.png", scale = 3, plot = g)
+#entropyValue = entropies(tableau = tbz, classeName = classes)
+#for (el in entropyValue)
+#  print(is.nan(el))
+
+#entropyValue = rapply( entropyValue, f=function(x) ifelse(is.nan(x),0,x), how="replace" )
+
+#maxi = c(2:20)[which.max(entropyValue)]
+#g <- qplot(x = 2:20, y = entropyValue,
+#          xlab="Nombre de clusters (k)",
+#          ylab="Pureté")
+#ggsave(filename = "data/pictures/Etude_entropy.png", scale = 3, plot = g)
 
 
 
-#=================Analyse discriminante=================#
+#=================Analyse discriminante=================####
 mat <- tb %>% 
-  select(animal.sex:animal.age) %>% as.matrix
+  dplyr::select(animal.sex:animal.age) %>% as.matrix
 y <- tb$Hunt
 model=lda(x=mat,grouping=y)
 fileConn <- file('data/files/model_analyse-discriminante.csv')
 capture.output(model, file = "data/files/model_analyse-discriminante.csv", append = F)
 close(fileConn)
-g <- plot(model)
-ggsave(filename = "data/pictures/model_analyse-discriminante.png", scale = 3, plot = g)
+
+plot(model)
+beep("coin")
+##############################################################################################################################
+# !CAUTION! cette section n'est pas à jour ! En attente d'amélioration...
+#
+# Manque le téléchargement sous format png du plot obtenu. Problème rencontré à cause du format fourni en sortie de lda()
+##############################################################################################################################
 
 
 
-#=================Comparaison projections ACP avec LDA=================#
+#=================Comparaison projections ACP avec LDA=================####
 ld.proj <- scale( mat, center=T, scale=F ) %*% model$scaling %>% 
   as_tibble
 tbProj <- tb %>% bind_cols(ld.proj)
 
-pl1 = tbProj %>% 
-  ggplot(aes(x=-Comp1, y=Comp2, color=Hunt, shape=Hunt)) + 
-  geom_point() + 
-  theme(legend.position = "none") +
-  ggtitle('ACP projection')
 pl2 = tbProj %>%
-  ggplot(aes(x=LD1, y=LD2, color=Hunt, shape=Hunt)) + 
+  ggplot(aes(x=LD1, y=LD2, color=tbProj[,1], shape=tbProj[,1])) + 
   geom_point() + 
   theme(legend.position = "none") +
   ggtitle('LDA projection')
-g <- grid.arrange(pl1, pl2, ncol=2)
+g <- grid.arrange(pl.acp, pl2, ncol=2)
 ggsave(filename = "data/pictures/comparaison_projection_ACP-LDA.png", scale = 3, plot = g)
 
 
 
-#=================Analyse des performances=================#
+#=================Analyse des performances=================####
 n = nrow(mat)
 training = sample(n, round(2*n/3)) # tirage aléatoire de 2/3 pour le jeu d'apprentissage
 mat.train = mat[training,]
@@ -746,13 +796,13 @@ mat.test = mat[-training,] # le reste pour le jeu de test
 y.test = y[-training]
 model.mass = lda(x=mat.train, grouping = y.train)
 
-#-----------------Prediction-----------------#
+#-----------------Prediction-----------------####
 prediction = predict(model.mass, mat.test)
 fileConn <- file('data/files/prediction.csv')
 capture.output(prediction, file = "data/files/prediction.csv", append = F)
 close(fileConn)
 
-#_________________Visualisation_________________#
+#_________________Visualisation_________________####
 predict_all = predict(model.mass, mat)
 
 pl3 = ggplot(data.frame(prediction$x, class = prediction$class), aes(x=LD1, y=LD2, color=class, shape=class)) + 
@@ -770,7 +820,7 @@ ggsave(filename = "data/pictures/projection_ensemble-dataset_points-predits.png"
 g <- grid.arrange(pl2, pl4, ncol=2)
 ggsave(filename = "data/pictures/comparaison_projection_prediction-LDA.png", scale = 3, plot = g)
 
-#-----------------Vérification de la pertinence du modèle-----------------#
+#-----------------Vérification de la pertinence du modèle-----------------####
 vectPred = predict_all$class
 vectOri = tb$Hunt
 confusMat <- confusionMatrix(vectPred, vectOri)
@@ -782,7 +832,11 @@ close(fileConn)
 
 
 
-
-
+#=========================================================================================####
+#                   Fin de la création d'un modèle prédictif en R                            #
+#                                                                                            #
+# Ca y est, vous avez enfin découvert la vérité ! Python est mieux que R...                  #
+#                                                                                            #
+#============================================================================================#
 
 beep("mario") #FIN DU SCRIPT
