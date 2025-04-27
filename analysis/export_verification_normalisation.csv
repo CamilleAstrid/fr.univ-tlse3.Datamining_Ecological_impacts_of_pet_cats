@@ -1,0 +1,9 @@
+# A tibble: 6 × 3
+  variable      moyenne `écart-type`
+  <chr>           <dbl>        <dbl>
+1 Hrs.indors          0            1
+2 N.neigbours         0            1
+3 N.pray              0            1
+4 Sterilisation       0            1
+5 animal.age          0            1
+6 animal.sex          0            1
