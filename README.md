@@ -48,7 +48,7 @@ En somme, il s’agit de lever le voile sur une influence tapie dans l’ombre, 
 
 Après obtention de notre modèle basé sur les chats domestiques australiens, nous avons recueilli des données sur nos petits compagnons dans le Sud Ouest de la France. Nous avons cherché à éprouver notre modèle sur un nouveau jeu de données.
 
-:construction:
+:construction: à faire avec Python (fonctionne le mieux)
 
 ## Structure
 **Dossiers et fichiers**
@@ -56,26 +56,21 @@ Après obtention de notre modèle basé sur les chats domestiques australiens, n
 * `README.md`  : Fichier de présentation du projet (vous y êtes !)
 * `LICENSE` : Licence d’utilisation
 * `.gitignore` : Liste des fichiers et/ou dossiers à ignorer pour le git
-
-
 * **analysis/**
 	*  `README.md` : Fichier de présentation des méthodes d'analyses employées et les prérequis de ces dernières
   	*  `*.png` : Ensemble des images exportées de ModeleR
   	*  `*.csv` : Ensemble des sorties de `ModeleR.r`
  	*  `clusteror.ipynb` : Jupyter Python utilisant *scipy*, notamment les packages *sklearn* et *auto-sklearn* pour faire de la classification automatisée
 	*  `ModeleR.R` : Script R utilisant principalement MASS afin de classifier automatiquement les chats
-
-
 * **data/**
 	*  `README.md` : Fichier de présentation des données
 	*  `OutCatdataCaracQuanti.csv` : Fichier csv après prétraitement des caractéristiques des chats étudiés
  	*  **French_dataset/** : Ensemble des fiches récoltées par l'équipe _Félinomicon_ de chats français
   		*  `README.md` : Informations sur l'obtention des données et de leur source
-    	*  `CatDataFrance.csv` : Fichier d'enregistrement des données
-     	*  `Felinomicon_fiche_autorisation.*` : Fiche de déclaration de consentement de récupération des données
-
+    		*  `FicheRGPD.pdf` : Informations sur les contraintes imposées par la collecte de données
+    		*  `CatDataFrance.csv` : Fichier d'enregistrement des données
+     		*  `Felinomicon_fiche_autorisation.*` : Fiche de déclaration de consentement de récupération des données
 	*  **pictures/** : Ensemble des images des chats de **French_dataset**
-
 * **data.preparation/**
   	*  `README.md` : Fichier de présentation des méthodes de prétraitement et de visualisation
  	*  `DataAnalysis.*` : vignettte de prétraitement des matrices individues/variables
@@ -83,8 +78,6 @@ Après obtention de notre modèle basé sur les chats domestiques australiens, n
   	*  `PreparatorQuantitativ.R` : Partie condensé et éxécutables de DataAnalysis pour la partie quantitatif
   	*  `TrueDataAnalysisCats.*` : Vignette de prétraitement et de visualisation plus avancées des matrices individu/variables
 	*  **Figs/** : Répertoire des figures R
-
-
 * **rapport/**
 	* `Enonce.md` : Enoncé du cahier des charges requis
  	* `README.md` : Mise en contexte du rapport
@@ -98,16 +91,40 @@ Langages
 * ![R](https://img.shields.io/badge/R-4.4.2+-darkred)
 * ![Python](https://img.shields.io/badge/python-3.8+-blue)
 
-Packages (et leurs dépendances) :
+Packages :
 
-![R-package](https://img.shields.io/badge/R-tidyverse-red) ![R-package](https://img.shields.io/badge/R-ggally-red) ![R-package](https://img.shields.io/badge/R-shiny-red) ![R-package](https://img.shields.io/badge/R-plotly-red) ![R-package](https://img.shields.io/badge/R-knitr-red) ![R-package](https://img.shields.io/badge/R-magrittr-red) ![R-package](https://img.shields.io/badge/R-stringr-red) ![R-package](https://img.shields.io/badge/R-kableextra-red) ![R-package](https://img.shields.io/badge/R-cluster-red) ![R-package](https://img.shields.io/badge/R-gridextra-red)
+![R-package](https://img.shields.io/badge/R-tidyverse-red)
+![R-package](https://img.shields.io/badge/R-magrittr-red)
+![R-package](https://img.shields.io/badge/R-GGally-red)
+![R-package](https://img.shields.io/badge/R-plotly-red)
+![R-package](https://img.shields.io/badge/R-factoextra-red)
+![R-package](https://img.shields.io/badge/R-progress-red)
+![R-package](https://img.shields.io/badge/R-beepr-red)
+![R-package](https://img.shields.io/badge/R-uwot-red)
+![R-package](https://img.shields.io/badge/R-grid-red)
+![R-package](https://img.shields.io/badge/R-gridExtra-red)
+![R-package](https://img.shields.io/badge/R-stats-red)
+![R-package](https://img.shields.io/badge/R-docstring-red)
+![R-package](https://img.shields.io/badge/R-MASS-red)
+![R-package](https://img.shields.io/badge/R-caret-red)
 
-![R-package](https://img.shields.io/badge/R-factoextra-red) ![R-package](https://img.shields.io/badge/R-Hmisc-red) ![R-package](https://img.shields.io/badge/R-gridExtra-red) ![R-package](https://img.shields.io/badge/R-grid-red) ![R-package](https://img.shields.io/badge/R-uwot-red) ![R-package](https://img.shields.io/badge/R-progress-red) ![R-package](https://img.shields.io/badge/R-stats-red)
+![R-package](https://img.shields.io/badge/R-shiny-red)
+![R-package](https://img.shields.io/badge/R-knitr-red)
+![R-package](https://img.shields.io/badge/R-stringr-red)
+![R-package](https://img.shields.io/badge/R-kableextra-red)
+![R-package](https://img.shields.io/badge/R-cluster-red)
+![R-package](https://img.shields.io/badge/R-Hmisc-red)
 
 
-![Python-package](https://img.shields.io/badge/Python-numpy-lightblue) ![Python-package](https://img.shields.io/badge/Python-pandas-lightblue) ![Python-package](https://img.shields.io/badge/Python-scipy-lightblue) ![Python-package](https://img.shields.io/badge/Python-scikit_learn-lightblue) ![Python-package](https://img.shields.io/badge/Python-matplotlib-lightblue)
-
-![Python-package](https://img.shields.io/badge/Python-plotly-lightblue) ![Python-package](https://img.shields.io/badge/Python-ipykernel-lightblue) ![Python-package](https://img.shields.io/badge/Python-nb_conda_kernels-lightblue) ![Python-package](https://img.shields.io/badge/Python-jupyterlab-lightblue) ![Python-package](https://img.shields.io/badge/Python-auto_sklearn-lightblue)
+![Python-package](https://img.shields.io/badge/Python-numpy-lightblue)
+![Python-package](https://img.shields.io/badge/Python-pandas-lightblue)
+![Python-package](https://img.shields.io/badge/Python-scipy-lightblue)
+![Python-package](https://img.shields.io/badge/Python-scikit_learn-lightblue)
+![Python-package](https://img.shields.io/badge/Python-matplotlib-lightblue)
+![Python-package](https://img.shields.io/badge/Python-ipykernel-lightblue)
+![Python-package](https://img.shields.io/badge/Python-nb_conda_kernels-lightblue)
+![Python-package](https://img.shields.io/badge/Python-jupyterlab-lightblue)
+![Python-package](https://img.shields.io/badge/Python-auto_sklearn-lightblue)
 
 
 ## Installation
@@ -161,9 +178,6 @@ mamba create -n Felinomicon r-base=4.4.2 r-tidyverse r-ggally  r-shiny r-plotly 
 mamba activate Felinomicon # Activation of the environment
 ```
 
-## Reproduction des analyses
-:construction:
-
 ## Licence
 Ce projet et donc l'ensemble des éléments de ce répertoire est sous [licence GPL-v3](https://github.com/CamilleAstrid/fr.univ-tlse3.Datamining_Ecological_impacts_of_pet_cats/blob/main/LICENSE) (sauf cas précisé).
 
@@ -190,11 +204,12 @@ Copyright (C) 2025 CamilleAstrid AMOUROUX-J SangaraSorama
 >
 >Si des ajustements ou des ajouts sont nécessaires, n'hésitez pas à nous le signaler !
 
----
+<details>
 
-> [!WARNING]
-> La section suivante peut effrayer certains curieux qui ne sont pas prêt à s'ouvrir à la vérité.
- 
+<summary> <strong>Pour ceux qui sont avides de savoir !</strong> </summary>
+
+⚠️ **La section suivante peut effrayer certains curieux qui ne sont pas prêt à s'ouvrir à la vérité.**
+
 <p align="center"> <strong> Les chats d'Ulthar </strong> <p/>
 
 > _"On dit qu’à Ulthar, qui se trouve au-delà du fleuve Skaï, nul ne peut tuer un chat; et, en vérité, je veux bien le croire, comme j’observe celui qui est couché là, ronronnant devant le feu. [...]_
@@ -218,3 +233,5 @@ Copyright (C) 2025 CamilleAstrid AMOUROUX-J SangaraSorama
 <p align="right">
 H. P. Lovecraft
 <p/>
+
+</details>
