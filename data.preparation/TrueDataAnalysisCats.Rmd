@@ -90,7 +90,7 @@ order = sprintf("%02d", -1:24)
 CatDataquali$Hrs.indors = order[ CatDataquali$Hrs.indors ] %>% as.factor
 ```
 
-On a des variables avec beaucoup de niveaux (nom, dates) nous allons les retirer car cela ralentit le temps de calcul et va génerer des règles trop spécifiques (le nom surtout) 
+On a des variables avec beaucoup de niveaux (nom, dates) nous allons les retirer car cela ralentit le temps de calcul et va générer des règles trop spécifiques (le nom surtout) 
 
 ```{r}
 trimmedCatDataquali = CatDataquali[,-1] #supprme l'indice de ligne

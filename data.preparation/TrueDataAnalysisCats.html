@@ -428,7 +428,7 @@ chiffres par ordre croissant :</h3>
 order = sprintf(&quot;%02d&quot;, -1:24)
 CatDataquali$Hrs.indors = order[ CatDataquali$Hrs.indors ] %&gt;% as.factor</code></pre>
 <p>On a des variables avec beaucoup de niveaux (nom, dates) nous allons
-les retirer car cela ralentit le temps de calcul et va génerer des
+les retirer car cela ralentit le temps de calcul et va générer des
 règles trop spécifiques (le nom surtout)</p>
 <pre class="r"><code>trimmedCatDataquali = CatDataquali[,-1] #supprme l&#39;indice de ligne
 trimmedCatDataquali = trimmedCatDataquali[,-1] # suppression de la date de début
