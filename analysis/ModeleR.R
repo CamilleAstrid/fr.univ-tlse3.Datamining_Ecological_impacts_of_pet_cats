@@ -1,3 +1,33 @@
+##################################################################################
+# BAC A SABLE
+mat = as.array(matrix(c(rep(1,999),NA),1e4,14))
+mat = cleanData(mat, colnames(mat))
+
+mat2 = as.array(matrix(c(rep(1,3),NA),6,6))
+mat2
+listName = c("a", "b", "c", "d", "e", "f")
+colnames(mat2) = listName
+rownames(mat2) = listName
+mat2
+mat2 = cleanData(mat2, c("a", "b", "c", "d", "e"))
+mat2
+
+fooNames = colnames(tb)
+unique(match("N.pray", fooNames))
+typeof(tb[80221,"N.pray"])
+is.na(tb[80221,"N.pray"])
+typeof(NA)
+typeof(NULL)
+
+pos_list <- list()
+for (colonne in pos_col){
+  indice = match(colonne, colnames(tableau))
+  pos_list = append(pos_list, indice)
+}
+##################################################################################
+
+
+
 #=================Chargement des librairies=================####
 library(tidyverse)
 library(magrittr)   # syntaxe, notamment affectation %<>%
@@ -10,6 +40,9 @@ library(uwot)       # utilisation pour umap
 library(grid)       # utilisation pour umap
 library(gridExtra)  # utilisation pour umap
 library(stats)      # pour le clustering
+library(docstring)  # "c'est comme le Port-Salut, c'est écrit dessus" --1961
+library(MASS)       # pour l'analyse discriminante
+library(caret)      # pour la vérif pertinence modèle (prédiction)
 
 
 
@@ -39,16 +72,21 @@ cleanData <- function(tableau, pos_col){
   #' Nos remerciements aux développeurs.
   #' }
   #' 
+  #' @note
+  #' Le temps de calcul peut être très important, il est recommandé d'utiliser
+  #' le GPU de la machine.
+  #' 
   #' @export
   #' @importFrom
   #####
   beep("ready")
+  docstring(cleanData)
   listeIndexNA = list() ; n_iter = length(tableau[,1])
-  pb <- progress_bar$new(format = "(:spin) [:bar] :percent [Elapsed time: :elapsedfull || Estimated time remaining: :eta]",
+  pb <- progress_bar$new(format = "(:spin) <:bar> :percent Reading... [Elapsed time: :elapsedfull || Estimated time remaining: :eta]",
                           total = n_iter,
                           complete = "=",   # Completion bar character
                           incomplete = "-", # Incomplete bar character
-                          current = ">",    # Current bar character
+                          current = "0",    # Current bar character
                           clear = FALSE,    # If TRUE, clears the bar when finish
                           width = 100)      # Width of the progress bar
   for(i in 1:n_iter) {
@@ -56,25 +94,89 @@ cleanData <- function(tableau, pos_col){
     #___
     # Code to be executed
     #___
-    for (element in pos_col){
+    pos_list <- list()
+    for (colonne in pos_col){
+      indice = match(colonne, colnames(tableau))
+      pos_list = append(pos_list, indice)
+    }
+    for (element in pos_list){
       if (is.na(tableau[i, element])){
         listeIndexNA = append(listeIndexNA, i)
         break
       }
     }
   }
+    #___
   beep("complete")
+  
+  n_iter = length(listeIndexNA)
+  pb <- progress_bar$new(format = "(:spin) <:bar> :percent Writing... [Elapsed time: :elapsedfull || Estimated time remaining: :eta]",
+                         total = n_iter,
+                         complete = "=",   # Completion bar character
+                         incomplete = "-", # Incomplete bar character
+                         current = "0",    # Current bar character
+                         clear = FALSE,    # If TRUE, clears the bar when finish
+                         width = 100)      # Width of the progress bar
   IndexNA = listeIndexNA[rev(1:length(listeIndexNA))]
-  for (i in IndexNA){
+  for(i in IndexNA) {
+    pb$tick() # Updates the current state
+    #___
+    # Code to be executed
+    #___
     i = as.numeric(i)
     tableau = tableau[-i,]
   }
     #___
   beep("fanfare")
-  docstring(cleanData)
   return(tableau)
 }
   
+prePurEnt <- function(k, tableau, classeName, typeAnalyse){
+  #####
+  #' Fonction prePurEnt
+  #' 
+  #' @description Fonction permettant d'obtenir la pureté associée à plusieurs kmeanS.
+  #' 
+  #' @param taille vector. Correspond aux valeurs de kmeans pour faire le test de pureté.
+  #' \subsection{Par défaut}{
+  #' taille = seq(2,20)
+  #' Le vecteur prend des valeurs de kmeans de 2 à 20 avec un pas de 1.
+  #' }
+  #' \subsection{Attention}{
+  #' Ce vecteur est composé de valeurs numériques et non de chaînes de caractères.
+  #' }
+  #' @param tableau array. Correspond au tableau à traiter.
+  #' @param classeName character. Correspond au nom de la colonnes où figure les classes.
+  #' \subsection{Attention}{
+  #' Ce vecteur est composé de chaînes de caractères et non de valeurs numériques.
+  #' }
+  #' 
+  #' @usage
+  #' purities(taille, tableau, classeName)
+  #' purities(tableau, classeName)
+  #' 
+  #' @return list. Les valeurs de pureté associées aux kmeans.
+  #' 
+  #' @import function. purity()
+  beep("ready")
+  classes = classeName
+  km = df %>% kmeans(centers=k)
+  clusters = km$cluster
+  cm = tapply(classes, clusters, summary) %>% simplify2array()
+  ni = colSums(cm)
+  pij = t(cm)/ni
+  if (typeAnalyse == "purity"){
+    pi = apply(pij, 1, max)
+    wi = ni/sum(ni)
+    res = sum(wi*pi)
+  }
+  else
+    res = pij*log(pij)
+
+  beep("complete")
+  return(res)
+}
+
 purity <- function(k, tableau, classeName){
   #####
   #' Fonction purity
@@ -94,17 +196,7 @@ purity <- function(k, tableau, classeName){
   #' @return numeric. La valeur de la pureté associée au kmeans.
   #' 
   #####
-  beep("ready")
-  classes = tableau$classeName
-  km = df %>% kmeans(centers=k)
-  clusters = km$cluster
-  cm = tapply(classes, clusters, summary) %>% simplify2array()
-  ni = colSums(cm)
-  pij = t(cm)/ni
-  pi = apply(pij, 1, max)
-  wi = ni/sum(ni)
-  res = sum(wi*pi)
-  beep("complete")
+  res = prePurEnt(k, tableau, classeName, "purity")
   return(res)
 }
 
@@ -136,12 +228,21 @@ purities <- function(taille = seq(2,20), tableau, classeName){
   #' 
   #' @import function. purity()
   #####
-  sapply(2:20, function(k){purity(k, tableau, classeName)})
-  docstring(purities)
+  res = sapply(taille, function(k){purity(k, tableau, classeName)})
   beep("fanfare")
+  return(res)
 }
 
+entropy <- function(k,tableau, classeName){
+  res = prePurEnt(k, tableau, classeName, "entropy")
+  return(res)
+}
 
+entropies <- function(taille = seq(2,20), tableau, classeName){
+  res = sapply(taille, function(k){entropy(k, tableau, classeName)})
+  beep("fanfare")
+  return(res)
+}
 
 #=================Chargement des données=================#####
 tb = read.table('../data/OutCatdataQuantitativ.csv', header = TRUE,  sep = ',',  stringsAsFactors = FALSE)
@@ -159,7 +260,6 @@ tb %>%
 
 
 #=================Visualisation avec ggplot2=================#####
-
 #-----------------Barplot des individus dans chaque classe-----------------#####
 tb.Caract = read.csv('../data/OutCatdataCaracQuanti.csv')
 
@@ -176,7 +276,7 @@ g <- tb.Caract %>%
   scale_fill_manual(values = c("Yes" = "darkgreen", "No" = "darkred", "Unknown" = "lightgrey")) +
   theme_minimal()
 
-ggsave(filename = "Barplot_Chasseurs.png", plot = g)
+ggsave(filename = "data/pictures/Barplot_Chasseurs.png", plot = g)
 
 
 #-----------------Plots de la répartition en fonction d'un caractère-----------------#####
@@ -186,42 +286,42 @@ g <- tb.Caract %>%
   ggplot(aes(x=animal.sex)) +
   geom_density(aes(fill=Hunt), alpha=0.35)  +
   theme_bw()
-ggsave(filename = "Densite_animal.sex-Hunt.png", plot = g)
+ggsave(filename = "data/pictures/Densite_animal.sex-Hunt.png", plot = g)
 
 #_________________Chasse ~ age_________________#####
 g <- tb.Caract %>% 
   ggplot(aes(x=animal.age)) +
   geom_density(aes(fill=Hunt), alpha=0.35)  +
   theme_bw()
-ggsave(filename = "Densite_animal.age-Hunt.png", plot = g)
+ggsave(filename = "data/pictures/Densite_animal.age-Hunt.png", plot = g)
 
 #_________________Chasse ~ sterilisation_________________#####
 g <- tb.Caract %>% 
   ggplot(aes(x=animal.reproductive.condition)) +
   geom_density(aes(fill=Hunt), alpha=0.35)  +
   theme_bw()
-ggsave(filename = "Densite_animal.reproductive.condition-Hunt.png", plot = g)
+ggsave(filename = "data/pictures/Densite_animal.reproductive.condition-Hunt.png", plot = g)
 
 g <- tb.Caract %>%
   ggplot(aes(x=animal.reproductive.condition, fill=Hunt)) + # aes pour aesthetic
   geom_bar(stat = 'count') + # https://ggplot2.tidyverse.org/reference/geom_bar.html
   scale_fill_manual(values = c("Yes" = "darkgreen", "No" = "darkred", "Unknown" = "lightgrey")) +
   theme_minimal()
-ggsave(filename = "Barplot_Chasseurs-animal.reproductive.condition.png", plot = g)
+ggsave(filename = "data/pictures/Barplot_Chasseurs-animal.reproductive.condition.png", plot = g)
 
 #_________________Chasse ~ nbre de chats dans le foyer_________________#####
 g <- tb.Caract %>% 
   ggplot(aes(x=N.neigbours)) +
   geom_density(aes(fill=Hunt), alpha=0.35)  +
   theme_bw()
-ggsave(filename = "Densite_N.neigbours-Hunt.png", plot = g)
+ggsave(filename = "data/pictures/Densite_N.neigbours-Hunt.png", plot = g)
 
 g <- tb.Caract %>%
   ggplot(aes(x=N.neigbours, fill=Hunt)) + # aes pour aesthetic
   geom_bar(stat = 'count') + # https://ggplot2.tidyverse.org/reference/geom_bar.html
   scale_fill_manual(values = c("Yes" = "darkgreen", "No" = "darkred", "Unknown" = "lightgrey")) +
   theme_minimal()
-ggsave(filename = "Barplot_Chasseurs-N.neigbours.png", plot = g)
+ggsave(filename = "data/pictures/Barplot_Chasseurs-N.neigbours.png", plot = g)
 
 
 
@@ -297,14 +397,9 @@ g <- tbg %>%
   group_by(variable) %>% 
   summarize(moyenne=round(mean(value.z), 4), `écart-type`=sd(value.z))
 
-fileConn <- file('export_verification_normalisation.csv')
-capture.output(g, file = "export_verification_normalisation.csv", append = F)
+fileConn <- file('data/files/export_verification_normalisation.csv')
+capture.output(g, file = "data/files/export_verification_normalisation.csv", append = F)
 close(fileConn)
-
-
-#=================Formatage des données=================#####
-znorm %>% 
-  knitr::kable()
 
 
 
@@ -314,7 +409,7 @@ g <- tbg %>%
   geom_violin() +
   geom_jitter(alpha=.3, width=.15, size=0.5, shape = 3) +
   facet_wrap(~ variable)
-ggsave(filename = "Boxplots_Chasseurs_Normalisation.png", scale = 2, plot = g)
+ggsave(filename = "data/pictures/Boxplots_Chasseurs_Normalisation.png", scale = 2, plot = g)
 
 
 
@@ -328,7 +423,7 @@ tbz = tbg %>%
 #=================Nuages de points=================#####
 g <- tbz %>%
   ggpairs(aes(color=Hunt, alpha=0.1))
-ggsave(filename = "Analyses_bivariees.png", scale = 3, plot = g)
+ggsave(filename = "data/pictures/Analyses_bivariees.png", scale = 3, plot = g)
 
 
 
@@ -336,12 +431,12 @@ ggsave(filename = "Analyses_bivariees.png", scale = 3, plot = g)
 g <- tb %>%
   select(-Hunt) %>%
   ggcorr()
-ggsave(filename = "Matrice_de_correlation.png", scale = 3, plot = g)
+ggsave(filename = "data/pictures/Matrice_de_correlation.png", scale = 3, plot = g)
 
 g <-tbz %>%
   select(-Hunt) %>%
   ggcorr()
-ggsave(filename = "Matrice_de_correlation_Normalisation.png", scale = 3, plot = g)
+ggsave(filename = "data/pictures/Matrice_de_correlation_Normalisation.png", scale = 3, plot = g)
 
 
 
@@ -355,7 +450,9 @@ unique(is.na.data.frame(tb)) # Vérification de la présence de NA value
 
 #_________________Ecriture, Lecture pour gain de temps lors des tests_________________#####
 write.csv(tb, file = "../data/OutCatdataQuantiNormZNoNA.csv") # Ecriture des données dans un fichier pour limiter le temps de calcul
-tb = read.csv(file = "../data/OutCatdataQuantiNormZNoNA.csv") # Lecture des données précédentes pour limiter le temps de calcul
+
+# Ligne à mettre en commentaires une fois le script finalisé
+tb = read.csv(file = "../data/OutCatdataQuantiNormZNoNA.csv") # Lecture des données précédentes pour limiter le temps de calcul pendant les tests
 
 
 #-----------------Calcul ACP-----------------#####
@@ -364,8 +461,8 @@ tb.acp = tb %>%
   as.matrix %>% 
   princomp(cor=T)
 
-fileConn <- file('export_tb.acp_summary.csv')
-capture.output(summary(tb.acp), file = "export_tb.acp_summary.csv", append = F)
+fileConn <- file('data/files/export_tb.acp_summary.csv')
+capture.output(summary(tb.acp), file = "data/files/export_tb.acp_summary.csv", append = F)
 close(fileConn)
 
 
@@ -373,15 +470,15 @@ close(fileConn)
 #-----------------Graphique pour choisir le nombre de composantes principales-----------------#####
 g <- tb.acp %>%
   fviz_screeplot(addlabels = TRUE, ylim = c(0, 50))
-ggsave(filename = "Eboulis_des_valeurs_propres.png", scale = 2, plot = g)
+ggsave(filename = "data/pictures/Eboulis_des_valeurs_propres.png", scale = 2, plot = g)
 
 
 #-----------------Contributions des variables-----------------#####
-tb.acp %>% 
+g <- tb.acp %>% 
   fviz_pca_var(col.var="contrib",
                gradient.cols = c("#17202a", "#e74c3c"),
                repel = TRUE)
-
+ggsave(filename = "data/pictures/Contribution-des-variables.png", scale = 2, plot = g)
 
 #-----------------Ajout des coordonnées projetées-----------------#####
 names(tb.acp$score[,1:2]) = c('Comp1','Comp2') 
@@ -395,7 +492,7 @@ g <- tb.acp %>%
                palette = c("#17202a", "#2ecc71", "#e74c3c"),
                addEllipses = TRUE # Concentration ellipses
   )
-ggsave(filename = "ACP_normee_CatsAust_factoextra.png", scale = 3, plot = g)
+ggsave(filename = "data/pictures/ACP_normee_CatsAust_factoextra.png", scale = 3, plot = g)
 
 
 
@@ -409,8 +506,8 @@ mdist = tbz %>%
   dist(method="euclidean") 
 mat = as.matrix(mdist)[1:10, 1:10] %>% round(2)
 
-fileConn <- file('export_matrice-distance-euclidienne.csv')
-capture.output(mat, file = "export_matrice-distance-euclidienne.csv", append = F)
+fileConn <- file('data/files/export_matrice-distance-euclidienne.csv')
+capture.output(mat, file = "data/files/export_matrice-distance-euclidienne.csv", append = F)
 close(fileConn)
 
 #_________________MDS_________________#####
@@ -427,7 +524,7 @@ pl.mds = tbz %>%
   theme(legend.position = "none") +
   ggtitle("MDS projection")
 g <- pl.mds
-ggsave(filename = "Projection_MDS.png", scale = 3, plot = g)
+ggsave(filename = "data/pictures/Projection_MDS.png", scale = 3, plot = g)
 
 
 #######################################################################
@@ -436,12 +533,11 @@ ggsave(filename = "Projection_MDS.png", scale = 3, plot = g)
 #.................ACP pour conservation des coordonnées des individus sur les 2 premières composantes.................#
 unique(is.na.data.frame(tbz)) # Vérification de la présence de NA value
 tbz = cleanData(tableau = tbz, pos_col = colnames(tbz)) # Suppression des NA
+unique(is.na.data.frame(tbz)) # Vérification de la présence de NA value
 tbz.acp = tbz %>% 
   select(animal.sex:animal.age) %>% 
   as.matrix %>% 
   princomp(cor=F)
-
-
 #.................Ajout des coordonnées.................#####
 tbz <- tbz %>% 
   bind_cols(data.frame(tbz.acp$scores[,1:2]))
@@ -452,7 +548,7 @@ pl.acp = tbz %>%
   theme(legend.position = "none") +
   ggtitle("PCA projection")
 g <- pl.acp
-ggsave(filename = "Projection_ACP.png", scale = 3, plot = g)
+ggsave(filename = "data/pictures/Projection_ACP.png", scale = 3, plot = g)
 #.................Même chose avec UMAP.................#####
 tbz.umap <- tbz %>% 
   select(animal.sex:animal.age) %>%
@@ -466,10 +562,10 @@ pl.umap = tbz %>%
   theme(legend.position = "none") +
   ggtitle("UMAP projection")
 g <- pl.umap
-ggsave(filename = "Projection_UMAP.png", scale = 3, plot = g)
+ggsave(filename = "data/pictures/Projection_UMAP.png", scale = 3, plot = g)
 #.................Plot ACP vs MDS vs UMAP.................#####
 g <- grid.arrange(pl.acp, pl.mds, pl.umap, ncol=3)
-ggsave(filename = "Projection_ACP-MDS-UMAP.png", scale = 3, plot = g)
+ggsave(filename = "data/pictures/Projection_ACP-MDS-UMAP.png", scale = 3, plot = g)
 
 
 #-----------------Clustering-----------------#####
@@ -492,7 +588,10 @@ colnames(tb2)=colonne_names
 tb = tb2
 
 #_________________Méthode des kmeans_________________#####
-k_tb = kmeans(tb[,-1], 3) ; k_tb # Sur tout le tableau (sans les classes) et en demandant 3 centres de clusters
+k_tb = kmeans(tb[,-1], 3) # Sur tout le tableau (sans les classes) et en demandant 3 centres de clusters
+fileConn <- file('data/files/export_methode-kmeans.csv')
+capture.output(k_tb, file = "data/files/export_methode-kmeans.csv", append = F)
+close(fileConn)
 
 
 #-----------------Affichage du plot-----------------#####
@@ -500,7 +599,7 @@ df = tbz %>% select(animal.sex:animal.age)
 km.3 = df %>% kmeans(centers=3)
 tbz = tbz %>% mutate(kmeans.3=as.factor(c('A', 'B', 'C') [km.3$cluster]))
 g = tbz
-ggsave(filename = "Clustering_kmeans.png", scale = 3, plot = g)
+ggsave(filename = "data/pictures/Clustering_kmeans.png", scale = 3, plot = g)
 
 
 
@@ -563,31 +662,121 @@ g <- (plot(x = 2:20, y = allures,
       abline(v = maxi, col = "red", lty = 2) +
       text(x = maxi+2, y=max(allures), labels = paste("k =",value_max), col = "red")
 )
-ggsave(filename = "Valeurs_kmeans.png", scale = 3, plot = g)
+ggsave(filename = "data/pictures/Valeurs_kmeans.png", scale = 3, plot = g)
 
 
 
 #=================Evaluation avec des mesures supervisées=================#####
 
 #-----------------Etude pour tous les k (de 2 à 20) : pureté-----------------#####
+classes = tbz$Hunt
+purityValue = purities(tableau = tbz, classeName = classes)
 
-purityValue = purities()
-
-plot.default(x = 2:20,
+g <- (plot.default(x = 2:20,
              y = purityValue,
              xlab="Nombre de clusters (k)",
              ylab="Pureté",
-             type = "b")
-moy = round(mean(purityValue), 2)
-value_moy = as.character(moy)
-abline(h = moy, col = "red", lty = 2)
-ypos = moy - 0.2
-text(x = 10, y=ypos, labels = paste("moyenne =",value_moy), col = "red")
+             type = "b") +
+      moy = round(mean(purityValue), 2) +
+      value_moy = as.character(moy) +
+      abline(h = moy, col = "red", lty = 2) +
+      ypos = moy - 0.2 +
+      text(x = 10, y=ypos, labels = paste("moyenne =",value_moy), col = "red")
+)
+ggsave(filename = "data/pictures/etude_purete.png", scale = 3, plot = g)
+
+
+#-----------------Etude pour tous les k (de 2 à 20) : entropie-----------------#####
+entropyValue = entropies(tableau = tbz, classeName = classes)
+
+g <- (plot.default(x = 2:20,
+                   y = entropyValue,
+                   xlab="Nombre de clusters (k)",
+                   ylab="Pureté",
+                   type = "b") +
+        moy = round(mean(entropyValue), 2) +
+        value_moy = as.character(moy) +
+        abline(h = moy, col = "red", lty = 2) +
+        ypos = moy - 0.2 +
+        text(x = 10, y=ypos, labels = paste("moyenne =",value_moy), col = "red")
+)
+ggsave(filename = "data/pictures/etude_entropy.png", scale = 3, plot = g)
 
 
 
+#=================Analyse discriminante=================#
+mat <- tb %>% 
+  select(animal.sex:animal.age) %>% as.matrix
+y <- tb$Hunt
+model=lda(x=mat,grouping=y)
+fileConn <- file('data/files/model_analyse-discriminante.csv')
+capture.output(model, file = "data/files/model_analyse-discriminante.csv", append = F)
+close(fileConn)
+g <- plot(model)
+ggsave(filename = "data/pictures/model_analyse-discriminante.png", scale = 3, plot = g)
 
 
+
+#=================Comparaison projections ACP avec LDA=================#
+ld.proj <- scale( mat, center=T, scale=F ) %*% model$scaling %>% 
+  as_tibble
+tbProj <- tb %>% bind_cols(ld.proj)
+
+pl1 = tbProj %>% 
+  ggplot(aes(x=-Comp1, y=Comp2, color=Hunt, shape=Hunt)) + 
+  geom_point() + 
+  theme(legend.position = "none") +
+  ggtitle('ACP projection')
+pl2 = tbProj %>%
+  ggplot(aes(x=LD1, y=LD2, color=Hunt, shape=Hunt)) + 
+  geom_point() + 
+  theme(legend.position = "none") +
+  ggtitle('LDA projection')
+g <- grid.arrange(pl1, pl2, ncol=2)
+ggsave(filename = "data/pictures/comparaison_projection_ACP-LDA.png", scale = 3, plot = g)
+
+
+
+#=================Analyse des performances=================#
+n = nrow(mat)
+training = sample(n, round(2*n/3)) # tirage aléatoire de 2/3 pour le jeu d'apprentissage
+mat.train = mat[training,]
+y.train = y[training]
+mat.test = mat[-training,] # le reste pour le jeu de test
+y.test = y[-training]
+model.mass = lda(x=mat.train, grouping = y.train)
+
+#-----------------Prediction-----------------#
+prediction = predict(model.mass, mat.test)
+fileConn <- file('data/files/prediction.csv')
+capture.output(prediction, file = "data/files/prediction.csv", append = F)
+close(fileConn)
+
+#_________________Visualisation_________________#
+predict_all = predict(model.mass, mat)
+
+pl3 = ggplot(data.frame(prediction$x, class = prediction$class), aes(x=LD1, y=LD2, color=class, shape=class)) + 
+  geom_point() + 
+  labs(title = 'Projection des points prédits')
+g <- pl3
+ggsave(filename = "data/pictures/projection_points-predits.png", scale = 3, plot = g)
+
+pl4 = ggplot(data.frame(predict_all$x, class = predict_all$class), aes(x=LD1, y=LD2, color=class)) +
+  geom_point()+
+  labs(title = "Projection de l'ensemble des points du jeu de données à travers la prédiction")
+g <- pl4
+ggsave(filename = "data/pictures/projection_ensemble-dataset_points-predits.png", scale = 3, plot = g)
+
+g <- grid.arrange(pl2, pl4, ncol=2)
+ggsave(filename = "data/pictures/comparaison_projection_prediction-LDA.png", scale = 3, plot = g)
+
+#-----------------Vérification de la pertinence du modèle-----------------#
+vectPred = predict_all$class
+vectOri = tb$Hunt
+confusMat <- confusionMatrix(vectPred, vectOri)
+fileConn <- file('data/files/matrice-de-confusion.csv')
+capture.output(confusMat, file = "data/files/matrice-de-confusion.csv", append = F)
+close(fileConn)
 
 
 
