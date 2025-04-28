@@ -1,3 +1,7 @@
+<p align="center">
+<img src="../data/pictures/logo_blanc.png" alt="logo_Felinomicon" width="200" />
+<p/>
+
 Scripts et/ou workflows utilisés pour la fouille de données à partir de la matrice *individus-variables*.
 
 ## Instalation des librairies python (auto-sklearn uniquement disponible Linux) : 
