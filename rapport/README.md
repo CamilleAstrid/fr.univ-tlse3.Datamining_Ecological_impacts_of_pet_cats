@@ -1,3 +1,7 @@
+<p align="center">
+<img src="../data/pictures/logo_blanc.png" alt="logo_Felinomicon" width="200" />
+<p/>
+
 # Préambule concernant la remise du projet
 
 Pour la remise du projet, il s'agit d'envoyer un mail à RB lorsque votre projet GitLab sera finalisé.
