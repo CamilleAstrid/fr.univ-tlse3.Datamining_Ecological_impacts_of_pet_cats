@@ -46,9 +46,11 @@ En somme, il s’agit de lever le voile sur une influence tapie dans l’ombre, 
 
 ### Principales conclusions
 
-Après obtention de notre modèle basé sur les chats domestiques australiens, nous avons recueilli des données sur nos petits compagnons dans le Sud Ouest de la France. Nous avons cherché à éprouver notre modèle sur un nouveau jeu de données.
+Après obtention de notre modèle basé sur les chats domestiques australiens, nous avons recueilli des données sur nos petits compagnons dans le Sud Ouest de la France. Nous avons cherché à éprouver notre modèle sur un nouveau jeu de données. Le modèle semble compatible avec divers types de jeux de données. Une extension du modèle serait à prévoir avec notamment :
 
-:construction: à faire avec Python (fonctionne le mieux)
+* Création applicatif user-friendly
+* Prédiction à partir de photographies
+* Prédiction des caractéristiques manquantes pour certains chats, notamment dans le cas des chats "errants" (sexe, stérilisation...)
 
 ## Structure
 **Dossiers et fichiers**
@@ -118,14 +120,8 @@ Packages :
 
 ![Python-package](https://img.shields.io/badge/Python-numpy-lightblue)
 ![Python-package](https://img.shields.io/badge/Python-pandas-lightblue)
-![Python-package](https://img.shields.io/badge/Python-scipy-lightblue)
 ![Python-package](https://img.shields.io/badge/Python-scikit_learn-lightblue)
-![Python-package](https://img.shields.io/badge/Python-matplotlib-lightblue)
-![Python-package](https://img.shields.io/badge/Python-ipykernel-lightblue)
-![Python-package](https://img.shields.io/badge/Python-nb_conda_kernels-lightblue)
-![Python-package](https://img.shields.io/badge/Python-jupyterlab-lightblue)
 ![Python-package](https://img.shields.io/badge/Python-auto_sklearn-lightblue)
-
 
 ## Installation
 
